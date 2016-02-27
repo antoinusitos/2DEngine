@@ -4,6 +4,7 @@
 #include "Data.h"
 #include "Input.h"
 #include "Map.h"
+#include "Debug.h"
 
 using namespace std;
 using namespace sf;

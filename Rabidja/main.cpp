@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
 
 		player->Draw(window);
 
+		Debug::Instance()->PrintDebug(window);
+
 		window.display();
 	}
 

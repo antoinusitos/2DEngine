@@ -48,6 +48,9 @@ private:
 	bool canJump;
 
 	int jumpState;
+
+	bool debug;
+	
 };
 
 #endif

@@ -29,6 +29,9 @@ Player::Player()
 	frameMax = 0;
 
 	jumpState = Data::Instance()->jump;
+
+
+	debug = true;
 }
 
 
@@ -134,6 +137,19 @@ void Player::Draw(RenderWindow &window)
 		}
 	}
 	window.draw(sprite);
+	
+	if (debug)
+	{
+		string s;
+
+		Debug::Instance()->AddDebug("X:" + to_string(x), false, 15, Color::Red);
+		Debug::Instance()->AddDebug("Y:" + to_string(y), false, 15, Color::Red);
+
+		Debug::Instance()->AddDebug("isGrounding: " + to_string(isGrounding), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("canJump: " + to_string(canJump), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("hasJump: " + to_string(hasJump), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("dirY: " + to_string(dirY), true, 15, Color::Red);
+	}
 }
 
 void Player::Update(Input * input)
@@ -204,7 +220,7 @@ void Player::Update(Input * input)
 
 		}
 
-		if (input->getButton().jump == true)
+		if (input->getButton().jump == true && state != Data::Instance()->JUMP1)
 		{
 			if (isGrounding == true && canJump)
 			{
@@ -212,11 +228,6 @@ void Player::Update(Input * input)
 				isGrounding = false;
 				hasJump = true;
 				canJump = false;
-				input->setButton(jumpState, false);
-			}
-			else
-			{
-				//ralentissement
 				input->setButton(jumpState, false);
 			}
 		}
