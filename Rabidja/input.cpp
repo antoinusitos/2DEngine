@@ -94,7 +94,7 @@ void Input::getInput(RenderWindow &window)
 				window.close();
 				break;
 
-			case Keyboard::C:
+			case Keyboard::Space:
 				button.jump = true;
 				break;
 

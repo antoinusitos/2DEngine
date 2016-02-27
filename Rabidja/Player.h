@@ -43,6 +43,11 @@ private:
 	float speed;
 
 	int life;
+
+	bool hasJump;
+	bool canJump;
+
+	int jumpState;
 };
 
 #endif

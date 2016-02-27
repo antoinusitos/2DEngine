@@ -27,6 +27,8 @@ Player::Player()
 	frameNumber = 0;
 	frameTimer = 0;
 	frameMax = 0;
+
+	jumpState = Data::Instance()->jump;
 }
 
 
@@ -38,6 +40,8 @@ void Player::Initialize()
 {
 	directionX = 0;
 	directionY = 0;
+	dirY = 0;
+	dirX = 0;
 	life = 3;
 	frameNumber = 0;
 	frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
@@ -52,6 +56,8 @@ void Player::Initialize()
 	state = Data::Instance()->IDLE;
 	width = Data::Instance()->PLAYER_WIDTH;
 	height = Data::Instance()->PLAYER_HEIGTH;
+	hasJump = false;
+	canJump = false;
 }
 
 void Player::SetLife(int theLife)
@@ -94,13 +100,38 @@ void Player::Draw(RenderWindow &window)
 
 	sprite.setPosition(Vector2f((float)x, (float)y));
 
-	if (direction == Data::Instance()->LEFT)
+	if (state == Data::Instance()->WALK)
 	{
-		sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, height, -width, height));
+		if (direction == Data::Instance()->LEFT)
+		{
+			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, height, -width, height));
+		}
+		else
+		{
+			sprite.setTextureRect(sf::IntRect(frameNumber * width, height, width, height));
+		}
 	}
-	else
+	else if (state == Data::Instance()->IDLE)
 	{
-		sprite.setTextureRect(sf::IntRect(frameNumber * width, height, width, height));
+		if (direction == Data::Instance()->LEFT)
+		{
+			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 0, -width, height));
+		}
+		else
+		{
+			sprite.setTextureRect(sf::IntRect(frameNumber * width, 0, width, height));
+		}
+	}
+	else if (state == Data::Instance()->JUMP1)
+	{
+		if (direction == Data::Instance()->LEFT)
+		{
+			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 2 * height, -width, height));
+		}
+		else
+		{
+			sprite.setTextureRect(sf::IntRect(frameNumber * width, 2 * height, width, height));
+		}
 	}
 	window.draw(sprite);
 }
@@ -175,12 +206,35 @@ void Player::Update(Input * input)
 
 		if (input->getButton().jump == true)
 		{
-			if (isGrounding == true)
+			if (isGrounding == true && canJump)
 			{
-				dirY = -Data::Instance()->JUMP_HEIGHT;
+				dirY -= Data::Instance()->JUMP_HEIGHT;
 				isGrounding = false;
+				hasJump = true;
+				canJump = false;
+				input->setButton(jumpState, false);
 			}
-			input->setButton(Data::Instance()->jump, false);
+			else
+			{
+				//ralentissement
+				input->setButton(jumpState, false);
+			}
+		}
+		else if (isGrounding == false)
+		{
+			if (y < Data::Instance()->MAX_MAP_Y)
+				y += dirY;
+			else if (hasJump)
+			{
+				y += dirY;
+				hasJump = false;
+			}
+			else
+			{
+				isGrounding = true;
+				hasJump = false;
+				canJump = true;
+			}
 		}
 
 		if (isGrounding == false)
