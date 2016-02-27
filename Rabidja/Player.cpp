@@ -47,31 +47,11 @@ void Player::Initialize()
 	height = Data::Instance()->PLAYER_HEIGTH;
 	width = Data::Instance()->PLAYER_WIDTH;
 	isGrounding = false;
-	speed = 2;
+	speed = 5.0f;
 	direction = Data::Instance()->RIGHT;
 	state = Data::Instance()->IDLE;
 	width = Data::Instance()->PLAYER_WIDTH;
 	height = Data::Instance()->PLAYER_HEIGTH;
-}
-
-void Player::SetX(int theX)
-{
-	x = theX;
-}
-
-void Player::SetY(int theY)
-{
-	y = theY;
-}
-
-void Player::SetHeight(int theHeight)
-{
-	height = theHeight;
-}
-
-void Player::SetWidth(int theWidth)
-{
-	width = theWidth;
 }
 
 void Player::SetLife(int theLife)
@@ -82,26 +62,6 @@ void Player::SetLife(int theLife)
 void Player::SetSpeed(float theSpeed)
 {
 	speed = theSpeed;
-}
-
-int Player::GetX()
-{
-	return x;
-}
-
-int Player::GetY()
-{
-	return y;
-}
-
-int Player::GetHeight()
-{
-	return height;
-}
-
-int Player::GetWidth()
-{
-	return width;
 }
 
 int Player::GetLife()
@@ -158,6 +118,7 @@ void Player::Update(Input * input)
 		if (input->getButton().left == true)
 		{
 			x -= speed;
+
 			//Et on indique qu'il va à gauche (pour le flip
 			//de l'affichage, rappelez-vous).
 			direction = Data::Instance()->LEFT;
@@ -179,6 +140,7 @@ void Player::Update(Input * input)
 		{
 			//On augmente les coordonnées en x du joueur
 			x += speed;
+
 			//Et on indique qu'il va à droite (pour le flip
 			//de l'affichage, rappelez-vous).
 			direction = Data::Instance()->RIGHT;

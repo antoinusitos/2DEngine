@@ -36,9 +36,9 @@ public:
 	const int TILE_SIZE = 32;
 
 	/* Constant for the player */
-	const double GRAVITY_SPEED = 0.6;
-	const int MAX_FALL_SPEED = 15;
-	const int JUMP_HEIGHT = 10;
+	const float GRAVITY_SPEED = 0.6f;
+	const float MAX_FALL_SPEED = 15.0f;
+	const float JUMP_HEIGHT = 10.0f;
 
 	/* Constant for the animation */
 	const int TIME_BETWEEN_2_FRAMES = 20;

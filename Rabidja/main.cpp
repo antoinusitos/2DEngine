@@ -18,12 +18,15 @@ int main(int argc, char *argv[])
 	player->Initialize();
 	player->SetX(100);
 	player->SetY(100);
+	sf::Clock clock;
 
 	// Boucle infinie, principale, du jeu 
 	while (window.isOpen())
 	{
 		/** GESTION DES INPUTS (CLAVIER, JOYSTICK) **/
 		input->gestionInputs(window);
+
+		Time time = clock.restart();
 
 		player->Update(input);
 
