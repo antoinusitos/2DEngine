@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
 		Time time = clock.restart();
 
 		player->Update(input);
+		player->mapCollision(map);
 
 		/**  DESSIN - DRAW  **/
 		//On dessine tout

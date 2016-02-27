@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(string tileName, int theX, int theY)
+Tile::Tile(string tileName, int theX, int theY, int theType)
 {
 	if (!texture.loadFromFile("graphics/"+tileName+".png"))
 	{
@@ -14,6 +14,7 @@ Tile::Tile(string tileName, int theX, int theY)
 	y = theY;
 	width = Data::Instance()->TILE_SIZE;
 	height = Data::Instance()->TILE_SIZE;
+	type = theType;
 }
 
 
@@ -30,4 +31,9 @@ void Tile::Draw(RenderWindow &window)
 
 void Tile::Update(Input * input)
 {
+}
+
+int Tile::GetType()
+{
+	return type;
 }

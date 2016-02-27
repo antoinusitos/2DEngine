@@ -24,9 +24,11 @@ public:
 
 	void DrawTiles(sf::RenderWindow &window);
 
-	void AddTile(string name, int posX, int posY);
+	void AddTile(string name, int posX, int posY, int type);
 
 	void GenerateTerrain();
+
+	Tile* GetTile(int x, int y);
 
 private:
 	//Variables de la classe en accès privé
@@ -40,6 +42,8 @@ private:
 	sf::Sprite tileSet1;
 	sf::Texture tileSet1BTexture;
 	sf::Sprite tileSet1B;
+
+	Tile* tile[150][400];
 
 	vector <Tile*> layer1;
 	//vector <int> layer2;

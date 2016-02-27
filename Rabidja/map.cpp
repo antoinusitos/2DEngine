@@ -52,15 +52,34 @@ void Map::DrawTiles(sf::RenderWindow & window)
 	}
 }
 
-void Map::AddTile(string name, int posX, int posY)
+void Map::AddTile(string name, int posX, int posY, int type)
 {
-	layer1.push_back(new Tile(name, posX, posY));
+	Tile* t = new Tile(name, posX * Data::Instance()->TILE_SIZE, posY * Data::Instance()->TILE_SIZE, type);
+	layer1.push_back(t);
+	tile[posY][posX] = t;
 }
 
 void Map::GenerateTerrain()
 {
 	for (int i = 0; i < 20; ++i)
 	{
-		AddTile("ground", i * Data::Instance()->TILE_SIZE, 450);
+		AddTile("ground", i, 13, 2);
 	}
+
+	AddTile("groundLeft", 10, 10, 2);
+	AddTile("groundMiddle", 11, 10, 2);
+	AddTile("groundRight", 12, 10, 2);
+
+	AddTile("Ladder", 10, 12, 3);
+	AddTile("Ladder", 10, 11, 3);
+	AddTile("Ladder", 10, 10, 3);
+
+	AddTile("groundLeft", 13, 7, 2);
+	AddTile("groundMiddle", 14, 7, 2);
+	AddTile("groundRight", 15, 7, 2);
+}
+
+Tile* Map::GetTile(int x, int y)
+{
+	return tile[x][y];
 }

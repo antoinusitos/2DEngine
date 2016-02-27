@@ -40,8 +40,8 @@ public:
 	const float GRAVITY_SPEED = 0.6f;
 	// Constant of fall speed = 20.0f
 	const float MAX_FALL_SPEED = 20.0f;
-	// Constant of jump height = 40.0f
-	const float JUMP_HEIGHT = 40.0f;
+	// Constant of jump height = 10.0f
+	const float JUMP_HEIGHT = 15.0f;
 
 	/* Constant for the animation = 20*/
 	const int TIME_BETWEEN_2_FRAMES = 20;
@@ -52,7 +52,7 @@ public:
 	const int SCREEN_HEIGHT = 480;
 
 	/* size of the map : 400 x 150 tiles */
-	const int MAX_MAP_X = 400;
+	const int MAX_MAP_X = 600;
 	/* size of the map : 400 x 150 tiles */
 	const int MAX_MAP_Y = 400;
 
@@ -67,11 +67,16 @@ public:
 	const int IDLE = 0;
 	const int WALK = 1;
 	const int JUMP1 = 2;
-	const int JUMP2 = 3;
+	const int LADDER = 3;
 	const int DEAD = 4;
 
 	const int RIGHT = 1;
 	const int LEFT = 2;
+
+	const int BLANK_TILE = 0;
+	const int TILE_TRAVERSABLE = 1;
+	const int TILE_DUR = 2;
+	const int TILE_LADDER = 3;
 
 private:
 

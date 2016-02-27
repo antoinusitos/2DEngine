@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "Tile.h"
 
 class Player : public Entity
 {
@@ -48,6 +49,8 @@ private:
 	bool canJump;
 
 	int jumpState;
+
+	int TileSize;
 
 	bool debug;
 	
