@@ -8,6 +8,9 @@
 #include <sstream>
 #include <vector>
 
+using namespace std;
+
+class Tile;
 
 class Map
 {
@@ -17,8 +20,13 @@ public:
 	Map();
 
 	//Fonctions
-	void drawBackground(sf::RenderWindow &window);
+	void DrawBackground(sf::RenderWindow &window);
 
+	void DrawTiles(sf::RenderWindow &window);
+
+	void AddTile(string name, int posX, int posY);
+
+	void GenerateTerrain();
 
 private:
 	//Variables de la classe en accès privé
@@ -33,7 +41,7 @@ private:
 	sf::Texture tileSet1BTexture;
 	sf::Sprite tileSet1B;
 
-	//vector <int> layer1;
+	vector <Tile*> layer1;
 	//vector <int> layer2;
 	//vector <int> layer3;
 

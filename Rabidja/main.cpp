@@ -35,7 +35,9 @@ int main(int argc, char *argv[])
 		window.clear();
 
 		//On affiche le background
-		map->drawBackground(window);
+		map->DrawBackground(window);
+
+		map->DrawTiles(window);
 
 		player->Draw(window);
 
