@@ -31,7 +31,7 @@ Player::Player()
 	jumpState = Data::Instance()->jump;
 
 
-	debug = true;
+	debug = false;
 }
 
 
