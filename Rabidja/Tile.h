@@ -6,7 +6,7 @@
 class Tile : public Entity
 {
 public:
-	Tile(string tileName, int theX, int theY, int theType);
+	Tile(string tileName, int theX, int theY, int theTileType);
 	~Tile();
 
 	void Draw(sf::RenderWindow &window) override;
@@ -15,7 +15,11 @@ public:
 	int GetType();
 
 private:
-	int type;
+	int collisionType;
+	int tileType;
+
+	int xSprite;
+	int ySprite;
 };
 
 #endif

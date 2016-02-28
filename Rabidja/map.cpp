@@ -1,6 +1,10 @@
 #include "map.h"
 #include "Tile.h"
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
 using namespace std;
 using namespace sf;
 
@@ -36,7 +40,15 @@ Map::Map()
 	else
 		tileSet1B.setTexture(tileSet1BTexture);
 
-	GenerateTerrain();
+	if (!tileSetTestTexture.loadFromFile("graphics/tilesettest.png"))
+	{
+		// Erreur
+		cout << "Erreur durant le chargement de l'image du tileset 1b." << endl;
+	}
+	else
+		tileSetTest.setTexture(tileSetTestTexture);
+
+	//GenerateTerrain();
 }
 
 void Map::DrawBackground(RenderWindow &window)
@@ -54,8 +66,11 @@ void Map::DrawTiles(sf::RenderWindow & window)
 
 void Map::AddTile(string name, int posX, int posY, int type)
 {
+	//create tile
 	Tile* t = new Tile(name, posX * Data::Instance()->TILE_SIZE, posY * Data::Instance()->TILE_SIZE, type);
+	//put it in the first layer
 	layer1.push_back(t);
+	//put it in the array for the collision
 	tile[posY][posX] = t;
 }
 
@@ -79,7 +94,76 @@ void Map::GenerateTerrain()
 	AddTile("groundRight", 15, 7, 2);
 }
 
+void Map::GenerateTerrainWithFile()
+{
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < 14; ++i)
+	{
+		for (int j = 0; j < 20; ++j)
+		{
+			AddTile("tilesettest", j, i, lignes[i][j]);
+		}
+	}
+}
+
 Tile* Map::GetTile(int x, int y)
 {
 	return tile[x][y];
+}
+
+void Map::LoadLevel(int nb)
+{
+	string name = "map/map" + to_string(nb) + ".txt";
+
+	fstream file;
+
+	vector < int > vectTemp;
+
+	string strBuf, strTmp;
+
+	stringstream iostr;
+
+	file.open(name, fstream::in);
+
+	if (!file.is_open())
+	{
+		cerr << "Erreur de chargement du fichier.\n";
+		exit(1);
+	}
+
+	while (!file.eof())
+	{
+		getline(file, strBuf);
+
+		if (!strBuf.size())
+			continue;
+
+		iostr.clear();
+
+		iostr.str(strBuf);
+
+		vectTemp.clear();
+
+		while (true)
+		{
+			// get tile number with delimiter
+			getline(iostr, strTmp, ' ');
+
+			//put the number in the vector
+			vectTemp.push_back(atoi(strTmp.c_str()));
+
+			//quit the while if finished
+			if (!iostr.good()) break;
+		}
+
+		//put the vector in the final one
+		if (vectTemp.size())
+			lignes.push_back(vectTemp);
+
+	}
+	file.close();
+
+	GenerateTerrainWithFile();
 }

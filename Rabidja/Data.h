@@ -51,9 +51,9 @@ public:
 	/* size of the window 800 * 480 */
 	const int SCREEN_HEIGHT = 480;
 
-	/* size of the map : 400 x 150 tiles */
+	/* size of the map : 600 x 400 tiles */
 	const int MAX_MAP_X = 600;
-	/* size of the map : 400 x 150 tiles */
+	/* size of the map : 600 x 400 tiles */
 	const int MAX_MAP_Y = 400;
 
 	/* Width of the player = 40 */
@@ -72,6 +72,9 @@ public:
 
 	const int RIGHT = 1;
 	const int LEFT = 2;
+
+	// 6 tiles per line
+	const int TILE_PER_LINE = 6;
 
 	const int BLANK_TILE = 0;
 	const int TILE_TRAVERSABLE = 1;

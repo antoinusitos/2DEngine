@@ -27,8 +27,11 @@ public:
 	void AddTile(string name, int posX, int posY, int type);
 
 	void GenerateTerrain();
+	void GenerateTerrainWithFile();
 
 	Tile* GetTile(int x, int y);
+
+	void LoadLevel(int nb);
 
 private:
 	//Variables de la classe en accès privé
@@ -43,7 +46,12 @@ private:
 	sf::Texture tileSet1BTexture;
 	sf::Sprite tileSet1B;
 
+	sf::Texture tileSetTestTexture;
+	sf::Sprite tileSetTest;
+
 	Tile* tile[150][400];
+
+	vector < vector < int > > lignes;
 
 	vector <Tile*> layer1;
 	//vector <int> layer2;

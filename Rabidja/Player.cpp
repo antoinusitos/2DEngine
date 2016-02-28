@@ -221,6 +221,7 @@ void Player::Update(Input * input)
 
 		}
 
+		//jump
 		if (input->getButton().jump == true && state != Data::Instance()->JUMP1)
 		{
 			if (isGrounding == true && canJump)
@@ -232,23 +233,8 @@ void Player::Update(Input * input)
 				input->setButton(jumpState, false);
 			}
 		}
-		else if (isGrounding == false)
-		{
-			/*if (y < Data::Instance()->MAX_MAP_Y)
-				y += dirY;
-			else if (hasJump)
-			{
-				y += dirY;
-				hasJump = false;
-			}
-			else
-			{
-				isGrounding = true;
-				hasJump = false;
-				canJump = true;
-			}*/
-		}
 
+		//is jumping
 		if (isGrounding == false)
 		{
 			if (state != Data::Instance()->JUMP1)
