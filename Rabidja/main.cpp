@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
 	Input* input = new Input();
 	Map* map = new Map();
-	Player* player = new Player();
+	Player* player = new Player(map);
 	player->Initialize();
 	player->SetX(100);
 	player->SetY(100);

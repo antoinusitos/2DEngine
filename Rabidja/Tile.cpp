@@ -26,14 +26,19 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	const int length = 8;
 
 	// tiles with no collision
-	int transparent [length] = { 15, 0, 1, 2, 6, 7, 8, 11 };
+	int transparent [length] = { 15, 0, 1, 2, 6, 7, 8 };
 
 	//find the tile in the array
 	int *foo = std::find(std::begin(transparent), std::end(transparent), theTileType);
 
 	//tile found
-	if (foo != transparent + length) {
+	if (foo != transparent + length) 
+	{
 		collisionType = Data::Instance()->BLANK_TILE;
+	}
+	else if (tileType == 11) 
+	{
+		collisionType = Data::Instance()->TILE_LADDER;
 	}
 	else 
 	{
@@ -61,3 +66,9 @@ int Tile::GetType()
 {
 	return collisionType;
 }
+
+int Tile::GetTileType()
+{
+	return tileType;
+}
+

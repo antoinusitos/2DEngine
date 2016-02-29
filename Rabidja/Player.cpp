@@ -3,7 +3,7 @@
 using namespace std;
 using namespace sf;
 
-Player::Player()
+Player::Player(Map* map)
 {
 	if (!texture.loadFromFile("graphics/rabidja.png"))
 	{
@@ -30,8 +30,9 @@ Player::Player()
 
 	jumpState = Data::Instance()->jump;
 
+	theMap = map;
 
-	debug = false;
+	debug = true;
 }
 
 
@@ -150,6 +151,7 @@ void Player::Draw(RenderWindow &window)
 		Debug::Instance()->AddDebug("canJump: " + to_string(canJump), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("hasJump: " + to_string(hasJump), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("dirY: " + to_string(dirY), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("state: " + to_string(state), true, 15, Color::Red);
 	}
 }
 
@@ -165,48 +167,66 @@ void Player::Update(Input * input)
 
 		if (input->getButton().left == true)
 		{
-			dirX -= speed;
-
-			//Et on indique qu'il va à gauche (pour le flip
-			//de l'affichage, rappelez-vous).
-			direction = Data::Instance()->LEFT;
-
-			//Si ce n'était pas son état auparavant et qu'il est bien sur
-			//le sol (car l'anim' sera différente s'il est en l'air)
-			if (state != Data::Instance()->WALK && isGrounding == true)
+			if (state == Data::Instance()->LADDER)
 			{
-				//On enregistre l'anim' de la marche et on l'initialise à 0
-				state = Data::Instance()->WALK;
-				frameNumber = 0;
-				frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-				frameMax = 8;
+				dirY = 0;
+				state = Data::Instance()->IDLE;
+			}
+			else
+			{
+
+				dirX -= speed;
+
+				//Et on indique qu'il va à gauche (pour le flip
+				//de l'affichage, rappelez-vous).
+				direction = Data::Instance()->LEFT;
+
+				//Si ce n'était pas son état auparavant et qu'il est bien sur
+				//le sol (car l'anim' sera différente s'il est en l'air)
+				if (state != Data::Instance()->WALK && isGrounding == true)
+				{
+					//On enregistre l'anim' de la marche et on l'initialise à 0
+					state = Data::Instance()->WALK;
+					frameNumber = 0;
+					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
+					frameMax = 8;
+				}
 			}
 		}
 
 		//Si on détecte un appui sur la touche fléchée droite
 		else if (input->getButton().right == true)
 		{
-			//On augmente les coordonnées en x du joueur
-			dirX += speed;
-
-			//Et on indique qu'il va à droite (pour le flip
-			//de l'affichage, rappelez-vous).
-			direction = Data::Instance()->RIGHT;
-
-			//Si ce n'était pas son état auparavant et qu'il est bien sur
-			//le sol (car l'anim' sera différente s'il est en l'air)
-			if (state != Data::Instance()->WALK && isGrounding == true)
+			if (state == Data::Instance()->LADDER)
 			{
-				//On enregistre l'anim' de la marche et on l'initialise à 0
-				state = Data::Instance()->WALK;
-				frameNumber = 0;
-				frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-				frameMax = 8;
+				dirY = 0;
+				state = Data::Instance()->IDLE;
+			}
+			else
+			{
+
+				//On augmente les coordonnées en x du joueur
+				dirX += speed;
+
+				//Et on indique qu'il va à droite (pour le flip
+				//de l'affichage, rappelez-vous).
+				direction = Data::Instance()->RIGHT;
+
+				//Si ce n'était pas son état auparavant et qu'il est bien sur
+				//le sol (car l'anim' sera différente s'il est en l'air)
+				if (state != Data::Instance()->WALK && isGrounding == true)
+				{
+					//On enregistre l'anim' de la marche et on l'initialise à 0
+					state = Data::Instance()->WALK;
+					frameNumber = 0;
+					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
+					frameMax = 8;
+				}
 			}
 		}
 
 		//Si on n'appuie sur rien et qu'on est sur le sol, on charge l'animation marquant l'inactivité (Idle)
-		else if (input->getButton().right == false && input->getButton().left == false && isGrounding == true)
+		else if (input->getButton().right == false && input->getButton().left == false && isGrounding == true && state != Data::Instance()->LADDER)
 		{
 			//On teste si le joueur n'était pas déjà inactif, pour ne pas recharger l'animation
 			//à chaque tour de boucle
@@ -221,6 +241,11 @@ void Player::Update(Input * input)
 
 		}
 
+		if (state == Data::Instance()->LADDER)
+		{
+			dirY = 0;
+		}
+
 		//jump
 		if (input->getButton().jump == true && state != Data::Instance()->JUMP1)
 		{
@@ -231,6 +256,24 @@ void Player::Update(Input * input)
 				hasJump = true;
 				canJump = false;
 				input->setButton(jumpState, false);
+			}
+		}
+		else if (input->getButton().up == true)
+		{
+			if (CheckCollision(theMap))
+			{
+				if (state != Data::Instance()->LADDER)
+					state = Data::Instance()->LADDER;
+				dirY = -Data::Instance()->CLIMB_HEIGHT;
+			}
+		}
+		else if (input->getButton().down == true)
+		{
+			if (CheckCollisionBottom(theMap))
+			{
+				if (state != Data::Instance()->LADDER)
+					state = Data::Instance()->LADDER;
+				dirY = Data::Instance()->CLIMB_HEIGHT;
 			}
 		}
 
@@ -249,6 +292,38 @@ void Player::Update(Input * input)
 		//On gère le scrolling (fonction ci-dessous)
 		//centerScrolling(map);
 	}
+}
+
+// check on top of the player if there is a ladder tile
+bool Player::CheckCollision(Map* map)
+{
+	int yTemp = (y + height - 1) / TileSize;
+	int xTemp = (x - (width / 4)) / TileSize;
+	if (map->GetTile(yTemp, xTemp + 1) != nullptr)
+	{
+		int l = map->GetTile(yTemp, xTemp + 1)->GetType();
+		if (map->GetTile(yTemp, xTemp + 1)->GetType() == Data::Instance()->TILE_LADDER)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+// check in the bottom of the player if there is a ladder tile
+bool Player::CheckCollisionBottom(Map* map)
+{
+	int yTemp = (y + (height + 1)) / TileSize;
+	int xTemp = (x - (width / 4)) / TileSize;
+	if (map->GetTile(yTemp, xTemp + 1) != nullptr)
+	{
+		int l = map->GetTile(yTemp, xTemp + 1)->GetType();
+		if (map->GetTile(yTemp, xTemp + 1)->GetType() == Data::Instance()->TILE_LADDER)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Player::mapCollision(Map* map)
@@ -337,7 +412,7 @@ void Player::mapCollision(Map* map)
 
 		if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y)
 		{
-			if (dirY > 0)
+			if (dirY > 0 && state != Data::Instance()->LADDER)
 			{
 				// Déplacement en bas
 				//Gestion des plateformes traversables : elles se situent juste avant
@@ -364,7 +439,7 @@ void Player::mapCollision(Map* map)
 				}
 			}
 
-			else if (dirY < 0)
+			else if (dirY < 0 && state != Data::Instance()->LADDER)
 			{
 				// Déplacement vers le haut
 				if (map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > BLANK_TILE || map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > BLANK_TILE)

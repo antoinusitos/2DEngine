@@ -13,6 +13,7 @@ public:
 	void Update(Input* input) override;
 
 	int GetType();
+	int GetTileType();
 
 private:
 	int collisionType;

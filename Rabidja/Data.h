@@ -46,8 +46,10 @@ public:
 	const float GRAVITY_SPEED = 0.6f;
 	// Constant of fall speed = 20.0f
 	const float MAX_FALL_SPEED = 20.0f;
-	// Constant of jump height = 10.0f
+	// Constant of jump height = 15.0f
 	const float JUMP_HEIGHT = 15.0f;
+	// Constant of climb height = 2.0f
+	const float CLIMB_HEIGHT = 2.0f;
 
 	/* Constant for the animation = 20*/
 	const int TIME_BETWEEN_2_FRAMES = 20;
@@ -82,10 +84,10 @@ public:
 	// 6 tiles per line
 	const int TILE_PER_LINE = 6;
 
+	const int TILE_LADDER = -1;
 	const int BLANK_TILE = 0;
 	const int TILE_TRAVERSABLE = 1;
 	const int TILE_DUR = 2;
-	const int TILE_LADDER = 3;
 
 private:
 

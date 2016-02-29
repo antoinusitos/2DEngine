@@ -7,7 +7,7 @@
 class Player : public Entity
 {
 public:
-	Player();
+	Player(Map* map);
 	~Player();
 
 	void Initialize();
@@ -24,6 +24,8 @@ public:
 
 	void Draw(sf::RenderWindow &window) override;
 	void Update(Input* input) override;
+	bool CheckCollision(Map* map);
+	bool CheckCollisionBottom(Map* map);
 	void mapCollision(Map* map);
 
 private:
@@ -54,6 +56,7 @@ private:
 
 	bool debug;
 	
+	Map* theMap;
 };
 
 #endif
