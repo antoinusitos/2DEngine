@@ -476,3 +476,9 @@ void Player::mapCollision(Map* map)
 		x = MAX_MAP_X - width;
 	}
 }
+
+void Player::SetStartPos(int startX, int startY)
+{
+	x = startX * TileSize;
+	y = startY * TileSize;
+}

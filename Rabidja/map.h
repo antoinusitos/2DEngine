@@ -33,6 +33,9 @@ public:
 
 	void LoadLevel(int nb);
 
+	int GetStartX();
+	int GetStartY();
+
 private:
 	//Variables de la classe en accès privé
 
@@ -56,6 +59,9 @@ private:
 	vector <Tile*> layer1;
 	//vector <int> layer2;
 	//vector <int> layer3;
+
+	int playerStartX;
+	int playerStartY;
 
 };
 #endif

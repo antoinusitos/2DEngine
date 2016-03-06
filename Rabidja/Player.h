@@ -27,6 +27,7 @@ public:
 	bool CheckCollision(Map* map);
 	bool CheckCollisionBottom(Map* map);
 	void mapCollision(Map* map);
+	void SetStartPos(int X, int Y);
 
 private:
 	float dirX;

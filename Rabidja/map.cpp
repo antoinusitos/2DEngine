@@ -49,6 +49,8 @@ Map::Map()
 		tileSetTest.setTexture(tileSetTestTexture);
 
 	//GenerateTerrain();
+	playerStartX = 0;
+	playerStartY = 0;
 }
 
 void Map::DrawBackground(RenderWindow &window)
@@ -96,13 +98,18 @@ void Map::GenerateTerrain()
 
 void Map::GenerateTerrainWithFile()
 {
-	int x = 0;
-	int y = 0;
+	int x = Data::Instance()->TILE_X;
+	int y = Data::Instance()->TILE_Y;
 
-	for (int i = 0; i < 14; ++i)
+	for (int i = 0; i < y ; ++i)
 	{
-		for (int j = 0; j < 20; ++j)
+		for (int j = 0; j < x; ++j)
 		{
+			if (lignes[i][j] == 14)
+			{
+				playerStartX = j;
+				playerStartY = i;
+			}
 			AddTile("tilesettest", j, i, lignes[i][j]);
 		}
 	}
@@ -166,4 +173,14 @@ void Map::LoadLevel(int nb)
 	file.close();
 
 	GenerateTerrainWithFile();
+}
+
+int Map::GetStartX()
+{
+	return playerStartX;
+}
+
+int Map::GetStartY()
+{
+	return playerStartY;
 }

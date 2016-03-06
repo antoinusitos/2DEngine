@@ -23,10 +23,10 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	tileType = theTileType;
 
 	// number of tile which has no collision
-	const int length = 8;
+	const int length = 30;
 
 	// tiles with no collision
-	int transparent [length] = { 15, 0, 1, 2, 6, 7, 8 };
+	int transparent[length] = { 15, 0, 1, 2, 6, 7, 8, 13, 14 };
 
 	//find the tile in the array
 	int *foo = std::find(std::begin(transparent), std::end(transparent), theTileType);

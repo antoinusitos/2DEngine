@@ -40,14 +40,14 @@ public:
 	const int TILE_X = 20;
 
 	/* Number of tile in Y */
-	const int TILE_Y = 10;
+	const int TILE_Y = 21;
 
 	// Constant of gravity = 0.6f
 	const float GRAVITY_SPEED = 0.6f;
 	// Constant of fall speed = 20.0f
 	const float MAX_FALL_SPEED = 20.0f;
-	// Constant of jump height = 15.0f
-	const float JUMP_HEIGHT = 15.0f;
+	// Constant of jump height = 5.0f
+	const float JUMP_HEIGHT = 8.0f;
 	// Constant of climb height = 2.0f
 	const float CLIMB_HEIGHT = 2.0f;
 
@@ -55,9 +55,9 @@ public:
 	const int TIME_BETWEEN_2_FRAMES = 20;
 
 	/* size of the window 800 * 480 */
-	const int SCREEN_WIDTH = 800;
+	const int SCREEN_WIDTH = TILE_X * TILE_SIZE;
 	/* size of the window 800 * 480 */
-	const int SCREEN_HEIGHT = 480;
+	const int SCREEN_HEIGHT = TILE_Y * TILE_SIZE;
 
 	/* size of the map : 600 x 400 tiles */
 	const int MAX_MAP_X = TILE_X * TILE_SIZE;
@@ -65,9 +65,9 @@ public:
 	const int MAX_MAP_Y = TILE_Y * TILE_SIZE;
 
 	/* Width of the player = 40 */
-	const int PLAYER_WIDTH = 40;
+	const int PLAYER_WIDTH = 30;
 	/* height of the player = 50 */
-	const int PLAYER_HEIGTH = 50;
+	const int PLAYER_HEIGTH = 30;
 	/* time = 5 */
 	const int TIME_BETWEEN_2_FRAMES_PLAYER = 5;
 
