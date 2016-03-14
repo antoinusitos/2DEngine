@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "Power.h"
 #include "Tile.h"
 
 class Player : public Entity
@@ -28,6 +29,7 @@ public:
 	bool CheckCollisionBottom(Map* map);
 	void mapCollision(Map* map);
 	void SetStartPos(int X, int Y);
+	void TakePower();
 
 private:
 	float dirX;
@@ -54,10 +56,11 @@ private:
 	int jumpState;
 
 	int TileSize;
-
-	bool debug;
 	
 	Map* theMap;
+
+	Power* takenPower;
+	time_t pickUpTime;
 };
 
 #endif

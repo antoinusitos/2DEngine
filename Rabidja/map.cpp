@@ -1,5 +1,6 @@
 #include "map.h"
 #include "Tile.h"
+#include "Power.h"
 
 #include <iostream>
 #include <fstream>
@@ -53,6 +54,15 @@ Map::Map()
 	playerStartY = 0;
 }
 
+Map::~Map()
+{
+
+	for (unsigned i = 0; i < powers.size(); i++)
+	{
+		delete powers.at(i);
+	}
+}
+
 void Map::DrawBackground(RenderWindow &window)
 {
 	window.draw(background);
@@ -63,6 +73,22 @@ void Map::DrawTiles(sf::RenderWindow & window)
 	for (unsigned i = 0; i < layer1.size(); i++)
 	{
 		layer1.at(i)->Draw(window);
+	}
+}
+
+void Map::DrawPowers(sf::RenderWindow & window)
+{
+	for (unsigned i = 0; i < powers.size(); i++)
+	{
+		powers.at(i)->Draw(window);
+	}
+}
+
+void Map::UpdatePowers()
+{
+	for (unsigned i = 0; i < powers.size(); i++)
+	{
+		powers.at(i)->Update(nullptr);
 	}
 }
 
@@ -105,12 +131,29 @@ void Map::GenerateTerrainWithFile()
 	{
 		for (int j = 0; j < x; ++j)
 		{
+			bool canDraw = true;
 			if (lignes[i][j] == 14)
 			{
 				playerStartX = j;
 				playerStartY = i;
 			}
-			AddTile("tilesettest", j, i, lignes[i][j]);
+			else if (lignes[i][j] == 24)
+			{
+				powers.push_back(new Power(Power::type::green, 10.0f, j, i));
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 25)
+			{
+				powers.push_back(new Power(Power::type::red, 15.0f, j, i));
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 26)
+			{
+				powers.push_back(new Power(Power::type::yellow, 5.0f, j, i));
+				canDraw = false;
+			}
+			if(canDraw)
+				AddTile("tilesettest", j, i, lignes[i][j]);
 		}
 	}
 }
@@ -183,4 +226,19 @@ int Map::GetStartX()
 int Map::GetStartY()
 {
 	return playerStartY;
+}
+
+Power* Map::GetPower(int theX, int theY)
+{
+	Power* retour = nullptr;
+
+	for (unsigned i = 0; i < powers.size(); i++)
+	{
+		if (powers.at(i)->GetX() == (theX * Data::Instance()->TILE_SIZE) && powers.at(i)->GetY() == (theY * Data::Instance()->TILE_SIZE))
+		{
+			retour = powers.at(i);
+		}
+	}
+
+	return retour;
 }

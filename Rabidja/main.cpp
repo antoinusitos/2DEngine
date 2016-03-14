@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
 
 		map->DrawTiles(window);
 
+		map->UpdatePowers();
+		map->DrawPowers(window);
+
 		player->Draw(window);
 
 		Debug::Instance()->PrintDebug(window);

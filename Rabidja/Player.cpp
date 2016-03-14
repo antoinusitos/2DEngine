@@ -13,26 +13,13 @@ Player::Player(Map* map)
 	else
 		sprite.setTexture(texture);
 
-	directionX = 0;
-	directionY = 0;
-	life = 3;
-	x = 0;
-	y = 0;
-	height = 0;
-	width = 0;
-	isGrounding = false;
-	speed = 1;
-	direction = Data::Instance()->RIGHT;
-	state = Data::Instance()->IDLE;
-	frameNumber = 0;
-	frameTimer = 0;
-	frameMax = 0;
-
 	jumpState = Data::Instance()->jump;
 
 	theMap = map;
 
 	debug = true;
+
+	Initialize();
 }
 
 
@@ -63,6 +50,8 @@ void Player::Initialize()
 	TileSize = Data::Instance()->TILE_SIZE;
 	hasJump = false;
 	canJump = false;
+	takenPower = nullptr;
+	pickUpTime = time(0);
 }
 
 void Player::SetLife(int theLife)
@@ -152,6 +141,8 @@ void Player::Draw(RenderWindow &window)
 		Debug::Instance()->AddDebug("hasJump: " + to_string(hasJump), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("dirY: " + to_string(dirY), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("state: " + to_string(state), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("PickUpTime: " + to_string(time(0) - pickUpTime), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("Power Attached: " + to_string(takenPower != nullptr ? true : false), true, 15, Color::Red);
 	}
 }
 
@@ -241,6 +232,13 @@ void Player::Update(Input * input)
 
 		}
 
+		if (input->getButton().action == true && time(0) - pickUpTime >= 0.5f)
+		{
+			TakePower();
+
+			pickUpTime = time(0);
+		}
+
 		if (state == Data::Instance()->LADDER)
 		{
 			dirY = 0;
@@ -304,6 +302,7 @@ bool Player::CheckCollision(Map* map)
 		int l = map->GetTile(yTemp, xTemp + 1)->GetType();
 		if (map->GetTile(yTemp, xTemp + 1)->GetType() == Data::Instance()->TILE_LADDER)
 		{
+			x = map->GetTile(yTemp, xTemp + 1)->GetX();
 			return true;
 		}
 	}
@@ -320,6 +319,7 @@ bool Player::CheckCollisionBottom(Map* map)
 		int l = map->GetTile(yTemp, xTemp + 1)->GetType();
 		if (map->GetTile(yTemp, xTemp + 1)->GetType() == Data::Instance()->TILE_LADDER)
 		{
+			x = map->GetTile(yTemp, xTemp + 1)->GetX();
 			return true;
 		}
 	}
@@ -475,10 +475,48 @@ void Player::mapCollision(Map* map)
 	{
 		x = MAX_MAP_X - width;
 	}
+
+	if (takenPower != nullptr)
+	{
+		if (!takenPower->GetIsAttached())
+		{
+			takenPower->SetPosition(x, y);
+		}
+		else
+		{
+			takenPower = nullptr;
+		}
+	}
 }
 
 void Player::SetStartPos(int startX, int startY)
 {
 	x = startX * TileSize;
 	y = startY * TileSize;
+}
+
+void Player::TakePower()
+{
+	if (takenPower != nullptr)
+	{
+		takenPower->Release();
+		takenPower = nullptr;
+	}
+
+	else
+	{
+		Power* retour = nullptr;
+		/* check de la collision et ramassage*/
+
+		int xPos = x / width;
+		int yPos = y / height;
+
+		retour = theMap->GetPower(xPos, yPos);
+
+		if (retour != nullptr)
+		{
+			takenPower = retour;
+			takenPower->Take();
+		}
+	}
 }

@@ -11,6 +11,7 @@
 using namespace std;
 
 class Tile;
+class Power;
 
 class Map
 {
@@ -18,11 +19,14 @@ public:
 
 	//Constructeur
 	Map();
+	~Map();
 
 	//Fonctions
 	void DrawBackground(sf::RenderWindow &window);
 
 	void DrawTiles(sf::RenderWindow &window);
+	void DrawPowers(sf::RenderWindow &window);
+	void UpdatePowers();
 
 	void AddTile(string name, int posX, int posY, int type);
 
@@ -35,6 +39,8 @@ public:
 
 	int GetStartX();
 	int GetStartY();
+
+	Power* GetPower(int theX, int theY);
 
 private:
 	//Variables de la classe en accès privé
@@ -62,6 +68,8 @@ private:
 
 	int playerStartX;
 	int playerStartY;
+
+	vector <Power*> powers;
 
 };
 #endif
