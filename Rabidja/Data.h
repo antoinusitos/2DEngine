@@ -81,8 +81,8 @@ public:
 	const int RIGHT = 1;
 	const int LEFT = 2;
 
-	// 6 tiles per line
-	const int TILE_PER_LINE = 6;
+	// 10 tiles per line
+	const int TILE_PER_LINE = 10;
 
 	const int TILE_LADDER = -1;
 	const int BLANK_TILE = 0;

@@ -14,7 +14,7 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	{
 		int setLength = Data::Instance()->TILE_PER_LINE;
 		ySprite = floor(theTileType / setLength) ;
-		xSprite = theTileType %  setLength;
+		xSprite = theTileType % setLength;
 		sprite.setTexture(texture);
 	}
 
@@ -26,7 +26,7 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	const int length = 30;
 
 	// tiles with no collision
-	int transparent[length] = { 15, 0, 1, 2, 6, 7, 8, 13, 14 };
+	int transparent[length] = { 15, 0, 1, 12, 13, 66, 67, 68, 69, 76, 77, 78, 79, 86, 87, 88, 89, 19 };
 
 	//find the tile in the array
 	int *foo = std::find(std::begin(transparent), std::end(transparent), theTileType);
@@ -36,7 +36,7 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	{
 		collisionType = Data::Instance()->BLANK_TILE;
 	}
-	else if (tileType == 11) 
+	else if (tileType == 50 || tileType == 40 || tileType == 30 || tileType == 20 || tileType == 10 || tileType == 32 || tileType == 42 || tileType == 52 || tileType == 62 || tileType == 72 || tileType == 82)
 	{
 		collisionType = Data::Instance()->TILE_LADDER;
 	}

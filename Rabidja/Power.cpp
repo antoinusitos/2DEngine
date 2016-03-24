@@ -9,22 +9,22 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY)
 	height = Data::Instance()->TILE_SIZE;
 
 	currentType = aType;
-	int theTileType = 23;
+	int theTileType = 15;
 
 	if (currentType == type::green)
 	{
-		theTileType = 24;
+		theTileType = 11;
 	}
 	else if (currentType == type::red)
 	{
-		theTileType = 25;
+		theTileType = 12;
 	}
 	else if (currentType == type::yellow)
 	{
-		theTileType = 26;
+		theTileType = 13;
 	}
 
-	if (!texture.loadFromFile("graphics/tilesettest.png"))
+	if (!texture.loadFromFile("graphics/level1TileSheet2.png"))
 	{
 		// Error
 		cout << "Error while loading the texture of the player." << endl;

@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	player->SetY(100);
 	sf::Clock clock;
 
-	map->LoadLevel(2);
+	map->LoadLevel(3);
 	player->SetStartPos(map->GetStartX(), map->GetStartY());
 
 	// Gameplay loop

@@ -14,7 +14,8 @@ Map::Map()
 {
 	//Chargement des ressources graphiques
 	//Chargement du background
-	if (!backgroundTexture.loadFromFile("graphics/background.png"))
+	//if (!backgroundTexture.loadFromFile("graphics/backgroundTest.png"))
+	if (!backgroundTexture.loadFromFile("graphics/backg.png"))
 	{
 		// Erreur
 		cout << "Erreur durant le chargement de l'image de background." << endl;
@@ -41,7 +42,7 @@ Map::Map()
 	else
 		tileSet1B.setTexture(tileSet1BTexture);
 
-	if (!tileSetTestTexture.loadFromFile("graphics/tilesettest.png"))
+	if (!tileSetTestTexture.loadFromFile("graphics/level1TileSheet.png"))
 	{
 		// Erreur
 		cout << "Erreur durant le chargement de l'image du tileset 1b." << endl;
@@ -132,28 +133,28 @@ void Map::GenerateTerrainWithFile()
 		for (int j = 0; j < x; ++j)
 		{
 			bool canDraw = true;
-			if (lignes[i][j] == 14)
+			if (lignes[i][j] == 19)
 			{
 				playerStartX = j;
 				playerStartY = i;
 			}
-			else if (lignes[i][j] == 24)
+			else if (lignes[i][j] == 11)
 			{
 				powers.push_back(new Power(Power::type::green, 10.0f, j, i));
 				canDraw = false;
 			}
-			else if (lignes[i][j] == 25)
+			else if (lignes[i][j] == 12)
 			{
 				powers.push_back(new Power(Power::type::red, 15.0f, j, i));
 				canDraw = false;
 			}
-			else if (lignes[i][j] == 26)
+			else if (lignes[i][j] == 13)
 			{
 				powers.push_back(new Power(Power::type::yellow, 5.0f, j, i));
 				canDraw = false;
 			}
 			if(canDraw)
-				AddTile("tilesettest", j, i, lignes[i][j]);
+				AddTile("level1TileSheet2", j, i, lignes[i][j]);
 		}
 	}
 }
