@@ -34,6 +34,7 @@ public:
 	void GenerateTerrainWithFile();
 
 	Tile* GetTile(int x, int y);
+	Tile* GetTile(int tileNumber);
 
 	void LoadLevel(int nb);
 
@@ -41,6 +42,9 @@ public:
 	int GetStartY();
 
 	Power* GetPower(int theX, int theY);
+	void SetRunningPower(Power* thePower);
+	void ResetRunningPower();
+	Power* GetRunningPower();
 
 private:
 	//Variables de la classe en accès privé
@@ -70,6 +74,6 @@ private:
 	int playerStartY;
 
 	vector <Power*> powers;
-
+	Power* runningPower;
 };
 #endif

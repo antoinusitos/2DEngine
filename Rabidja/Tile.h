@@ -14,13 +14,18 @@ public:
 
 	int GetType();
 	int GetTileType();
+	void Hide();
+	void Show();
 
 private:
 	int collisionType;
+	int originalCollisionType;
 	int tileType;
 
 	int xSprite;
 	int ySprite;
+
+	bool mustBeRendered;
 };
 
 #endif

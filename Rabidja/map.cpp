@@ -140,17 +140,17 @@ void Map::GenerateTerrainWithFile()
 			}
 			else if (lignes[i][j] == 11)
 			{
-				powers.push_back(new Power(Power::type::green, 10.0f, j, i));
+				powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
 				canDraw = false;
 			}
 			else if (lignes[i][j] == 12)
 			{
-				powers.push_back(new Power(Power::type::red, 15.0f, j, i));
+				powers.push_back(new Power(Power::type::red, 15.0f, j, i, this));
 				canDraw = false;
 			}
 			else if (lignes[i][j] == 13)
 			{
-				powers.push_back(new Power(Power::type::yellow, 5.0f, j, i));
+				powers.push_back(new Power(Power::type::yellow, 15.0f, j, i, this));
 				canDraw = false;
 			}
 			if(canDraw)
@@ -162,6 +162,22 @@ void Map::GenerateTerrainWithFile()
 Tile* Map::GetTile(int x, int y)
 {
 	return tile[x][y];
+}
+
+Tile* Map::GetTile(int tileNumber)
+{
+	int x = Data::Instance()->TILE_X;
+	int y = Data::Instance()->TILE_Y;
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			if(tile[j][i] != nullptr && tile[j][i]->GetTileType() == tileNumber)
+				return tile[j][i];
+		}
+	}
+	return nullptr;
 }
 
 void Map::LoadLevel(int nb)
@@ -242,4 +258,20 @@ Power* Map::GetPower(int theX, int theY)
 	}
 
 	return retour;
+}
+
+void Map::SetRunningPower(Power * thePower)
+{
+	runningPower = thePower;
+	runningPower->Activate();
+}
+
+void Map::ResetRunningPower()
+{
+	runningPower = nullptr;
+}
+
+Power* Map::GetRunningPower()
+{
+	return runningPower;
 }

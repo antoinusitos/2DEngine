@@ -44,6 +44,10 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	{
 		collisionType = Data::Instance()->TILE_DUR;
 	}
+
+	originalCollisionType = collisionType;
+
+	mustBeRendered = true;
 }
 
 
@@ -55,7 +59,8 @@ void Tile::Draw(RenderWindow &window)
 {
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
-	window.draw(sprite);
+	if(mustBeRendered)
+		window.draw(sprite);
 }
 
 void Tile::Update(Input * input)
@@ -70,5 +75,17 @@ int Tile::GetType()
 int Tile::GetTileType()
 {
 	return tileType;
+}
+
+void Tile::Hide()
+{
+	mustBeRendered = false;
+	collisionType = Data::Instance()->BLANK_TILE;
+}
+
+void Tile::Show()
+{
+	mustBeRendered = true;
+	collisionType = originalCollisionType;
 }
 

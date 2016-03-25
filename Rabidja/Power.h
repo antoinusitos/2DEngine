@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+class Map;
+
 class Power : public Entity
 {
 public:
@@ -14,7 +16,7 @@ public:
 		green,
 	};
 
-	Power(type aType, float aTimeToRespawn, int aPosX, int aPosY);
+	Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap);
 	~Power();
 
 	void Draw(sf::RenderWindow &window) override;
@@ -26,7 +28,13 @@ public:
 	void SetPosition(int X, int Y);
 
 	bool GetIsAttached();
+	void SetIsAttached(bool newState);
 	bool GetCanBePicked();
+
+	void Reset();
+
+	void Activate();
+	void Desactivate();
 
 private:
 
@@ -47,6 +55,8 @@ private:
 
 	int xSprite;
 	int ySprite;
+
+	Map* map;
 };
 
 #endif

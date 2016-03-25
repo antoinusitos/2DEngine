@@ -370,6 +370,26 @@ void Player::mapCollision(Map* map)
 					x -= width + 1;
 					dirX = 0;
 				}
+				else
+				{
+					//pose le power dans le generateur
+					if (map->GetTile(y1, x2) != nullptr && map->GetTile(y1, x2)->GetTileType() == 89 && takenPower != nullptr)
+					{
+						Tile* theTile = map->GetTile(y1, x2);
+						int theX = theTile->GetX() - theTile->GetWidth() / 2;
+						int theY = theTile->GetY() - theTile->GetHeight();
+						takenPower->SetPosition(theX, theY);
+						
+						if (map->GetRunningPower() != nullptr)
+						{
+							map->GetRunningPower()->Reset();
+						}
+
+						map->SetRunningPower(takenPower);
+						takenPower = nullptr;
+
+					}
+				}
 			}
 
 			//Même chose à gauche
@@ -379,6 +399,26 @@ void Player::mapCollision(Map* map)
 				{
 					x = (x1 + 1) * TileSize;
 					dirX = 0;
+				}
+				else
+				{
+					//pose le power dans le generateur
+					if (map->GetTile(y1, x2) != nullptr && map->GetTile(y1, x2)->GetTileType() == 89 && takenPower != nullptr)
+					{
+						Tile* theTile = map->GetTile(y1, x2);
+						int theX = theTile->GetX() - theTile->GetWidth() / 2;
+						int theY = theTile->GetY() - theTile->GetHeight();
+						takenPower->SetPosition(theX, theY);
+
+						if (map->GetRunningPower() != nullptr)
+						{
+							map->GetRunningPower()->Reset();
+						}
+
+						map->SetRunningPower(takenPower);
+						takenPower = nullptr;
+
+					}
 				}
 			}
 
@@ -434,7 +474,6 @@ void Player::mapCollision(Map* map)
 				}
 				else if(map->GetTile(y2, x1) != nullptr || map->GetTile(y2, x2) != nullptr)
 				{
-					//lol
 					cout << endl;
 				}
 			}

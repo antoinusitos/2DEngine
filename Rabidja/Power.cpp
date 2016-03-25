@@ -2,8 +2,10 @@
 #include <time.h>
 
 #include "Entity.h"
+#include "Tile.h"
+#include "Map.h"
 
-Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY)
+Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap)
 {
 	width = Data::Instance()->TILE_SIZE;
 	height = Data::Instance()->TILE_SIZE;
@@ -46,6 +48,7 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY)
 	debug = false;
 	isAttached = true;
 	canbePicked = true;
+	map = theMap;
 }
 
 Power::~Power()
@@ -74,10 +77,8 @@ void Power::Update(Input * input)
 	{
 		if (time(0) - pickUpTime >= timeToRespawn)
 		{
-			x = posX;
-			y = posY;
-			isAttached = true;
-			pickUpTime = time(0);
+			Reset();
+			map->ResetRunningPower();
 		}
 	}
 }
@@ -108,8 +109,57 @@ bool Power::GetIsAttached()
 	return isAttached;
 }
 
+void Power::SetIsAttached(bool newState)
+{
+	isAttached = newState;
+}
+
 bool Power::GetCanBePicked()
 {
 	return canbePicked;
 }
 
+void Power::Reset()
+{
+	x = posX;
+	y = posY;
+	isAttached = true;
+	pickUpTime = time(0);
+	Desactivate();
+}
+
+void Power::Activate()
+{
+	if (currentType == type::green)
+	{
+		
+	}
+	else if (currentType == type::red)
+	{
+		
+	}
+	else if (currentType == type::yellow)
+	{
+		map->GetTile(45)->Hide();
+		map->GetTile(55)->Hide();
+		map->GetTile(65)->Hide();
+	}
+}
+
+void Power::Desactivate()
+{
+	if (currentType == type::green)
+	{
+
+	}
+	else if (currentType == type::red)
+	{
+
+	}
+	else if (currentType == type::yellow)
+	{
+		map->GetTile(45)->Show();
+		map->GetTile(55)->Show();
+		map->GetTile(65)->Show();
+	}
+}
