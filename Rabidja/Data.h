@@ -64,10 +64,10 @@ public:
 	/* size of the map : 600 x 400 tiles */
 	const int MAX_MAP_Y = TILE_Y * TILE_SIZE;
 
-	/* Width of the player = 40 */
-	const int PLAYER_WIDTH = 30;
-	/* height of the player = 50 */
-	const int PLAYER_HEIGTH = 30;
+	/* Width of the player = 32 */
+	const int PLAYER_WIDTH = 32;
+	/* height of the player = 32 */
+	const int PLAYER_HEIGTH = 32 ;
 	/* time = 5 */
 	const int TIME_BETWEEN_2_FRAMES_PLAYER = 5;
 
@@ -82,6 +82,7 @@ public:
 	const int LEFT = 2;
 
 	// 10 tiles per line
+	//const int TILE_PER_LINE = 10;
 	const int TILE_PER_LINE = 10;
 
 	const int TILE_LADDER = -1;

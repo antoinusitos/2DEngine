@@ -1,6 +1,9 @@
 #include "map.h"
 #include "Tile.h"
 #include "Power.h"
+#include "Blocker.h"
+#include "EndingPlateform.h"
+#include "Bomb.h"
 
 #include <iostream>
 #include <fstream>
@@ -53,6 +56,7 @@ Map::Map()
 	//GenerateTerrain();
 	playerStartX = 0;
 	playerStartY = 0;
+	canFinish = false;
 }
 
 Map::~Map()
@@ -85,12 +89,48 @@ void Map::DrawPowers(sf::RenderWindow & window)
 	}
 }
 
+void Map::DrawBlockers(sf::RenderWindow & window)
+{
+	for (unsigned i = 0; i < blockers.size(); i++)
+	{
+		blockers.at(i)->Draw(window);
+	}
+}
+
+void Map::DrawEnding(sf::RenderWindow & window)
+{
+	theEndingPlateform->Draw(window);
+}
+
+void Map::DrawBomb(sf::RenderWindow & window)
+{
+	theBomb->Draw(window);
+}
+
 void Map::UpdatePowers()
 {
 	for (unsigned i = 0; i < powers.size(); i++)
 	{
 		powers.at(i)->Update(nullptr);
 	}
+}
+
+void Map::UpdateBlockers()
+{
+	for (unsigned i = 0; i < blockers.size(); i++)
+	{
+		blockers.at(i)->Update(nullptr);
+	}
+}
+
+void Map::UpdateEnding()
+{
+	theEndingPlateform->Update(nullptr);
+}
+
+void Map::UpdateBomb()
+{
+	theBomb->Update(nullptr);
 }
 
 void Map::AddTile(string name, int posX, int posY, int type)
@@ -145,12 +185,32 @@ void Map::GenerateTerrainWithFile()
 			}
 			else if (lignes[i][j] == 12)
 			{
-				powers.push_back(new Power(Power::type::red, 15.0f, j, i, this));
+				powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
 				canDraw = false;
 			}
 			else if (lignes[i][j] == 13)
 			{
 				powers.push_back(new Power(Power::type::yellow, 15.0f, j, i, this));
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58|| lignes[i][j] == 84 || lignes[i][j] == 85
+				 || lignes[i][j] == 85)
+			{
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 59)
+			{
+				blockers.push_back(new Blocker("level1TileSheet2", j, i));
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 83)
+			{
+				theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 05)
+			{
+				theBomb = new Bomb("level1TileSheet2", j, i);
 				canDraw = false;
 			}
 			if(canDraw)
@@ -274,4 +334,24 @@ void Map::ResetRunningPower()
 Power* Map::GetRunningPower()
 {
 	return runningPower;
+}
+
+vector<Blocker*> Map::GetBlockers()
+{
+	return blockers;
+}
+
+EndingPlateform * Map::GetEnding()
+{
+	return theEndingPlateform;
+}
+
+void Map::SetCanFinish(bool state)
+{
+	canFinish = state;
+}
+
+bool Map::GetCanFinish()
+{
+	return canFinish;
 }

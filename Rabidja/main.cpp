@@ -38,6 +38,15 @@ int main(int argc, char *argv[])
 		map->UpdatePowers();
 		map->DrawPowers(window);
 
+		map->UpdateBlockers();
+		map->DrawBlockers(window);
+
+		map->UpdateEnding();
+		map->DrawEnding(window);
+
+		map->UpdateBomb();
+		map->DrawBomb(window);
+
 		player->Draw(window);
 
 		Debug::Instance()->PrintDebug(window);

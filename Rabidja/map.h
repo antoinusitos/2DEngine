@@ -12,6 +12,9 @@ using namespace std;
 
 class Tile;
 class Power;
+class Blocker;
+class EndingPlateform;
+class Bomb;
 
 class Map
 {
@@ -26,7 +29,13 @@ public:
 
 	void DrawTiles(sf::RenderWindow &window);
 	void DrawPowers(sf::RenderWindow &window);
+	void DrawBlockers(sf::RenderWindow &window);
+	void DrawEnding(sf::RenderWindow &window);
+	void DrawBomb(sf::RenderWindow &window);
 	void UpdatePowers();
+	void UpdateBlockers();
+	void UpdateEnding();
+	void UpdateBomb();
 
 	void AddTile(string name, int posX, int posY, int type);
 
@@ -45,6 +54,12 @@ public:
 	void SetRunningPower(Power* thePower);
 	void ResetRunningPower();
 	Power* GetRunningPower();
+
+	vector<Blocker*> GetBlockers();
+	EndingPlateform* GetEnding();
+
+	void SetCanFinish(bool state);
+	bool GetCanFinish();
 
 private:
 	//Variables de la classe en accès privé
@@ -75,5 +90,13 @@ private:
 
 	vector <Power*> powers;
 	Power* runningPower;
+
+	vector <Blocker*> blockers;
+
+	EndingPlateform* theEndingPlateform;
+
+	Bomb* theBomb;
+
+	bool canFinish;
 };
 #endif

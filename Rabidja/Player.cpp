@@ -133,8 +133,8 @@ void Player::Draw(RenderWindow &window)
 	{
 		string s;
 
-		Debug::Instance()->AddDebug("X:" + to_string(x), false, 15, Color::Red);
-		Debug::Instance()->AddDebug("Y:" + to_string(y), false, 15, Color::Red);
+		Debug::Instance()->AddDebug("X:" + to_string(x) + "(" + to_string(x/32) + ")", false, 15, Color::Red);
+		Debug::Instance()->AddDebug("Y:" + to_string(y) + "(" + to_string(y / 32) + ")", false, 15, Color::Red);
 
 		Debug::Instance()->AddDebug("isGrounding: " + to_string(isGrounding), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("canJump: " + to_string(canJump), true, 15, Color::Red);
@@ -148,6 +148,13 @@ void Player::Draw(RenderWindow &window)
 
 void Player::Update(Input * input)
 {
+	if (debug)
+	{
+		string s;
+
+		Debug::Instance()->AddDebug("Touche E:" + to_string(input->getButton().action), false, 15, Color::Red);
+	}
+
 	if (state != Data::Instance()->DEAD)
 	{
 		dirX = 0;
@@ -444,8 +451,10 @@ void Player::mapCollision(Map* map)
 
 	for (;;)
 	{
-		x1 = (x) / TileSize;
+		/*x1 = (x) / TileSize;
 		x2 = (x + i) / TileSize;
+		int x3 = (x / TileSize) + ((width / 2) / TileSize);
+
 
 		y1 = (y + dirY) / TileSize;
 		y2 = (y + dirY + height) / TileSize;
@@ -461,7 +470,8 @@ void Player::mapCollision(Map* map)
 				//traversable au lieu de BLANK_TILE pour bloquer le joueur,
 				//seulement quand il tombe dessus (sinon, il passe au-travers
 				//et le test n'est donc pas effectué dans les autres directions
-				if ((map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > TILE_TRAVERSABLE) || (map->GetTile(y2, x2) != nullptr && map->GetTile(y2, x2)->GetType() > TILE_TRAVERSABLE))
+				//if ((map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > TILE_TRAVERSABLE) || (map->GetTile(y2, x2) != nullptr && map->GetTile(y2, x2)->GetType() > TILE_TRAVERSABLE))
+				if ((map->GetTile(y2, x3) != nullptr && map->GetTile(y2, x3)->GetType() > TILE_TRAVERSABLE)/* || (map->GetTile(y2, x2) != nullptr && map->GetTile(y2, x2)->GetType() > TILE_TRAVERSABLE))
 				{
 					//Si la tile est une plateforme ou une tile solide, on y colle le joueur et
 					//on le déclare sur le sol (onGround).
@@ -472,10 +482,10 @@ void Player::mapCollision(Map* map)
 					hasJump = false;
 					canJump = true;
 				}
-				else if(map->GetTile(y2, x1) != nullptr || map->GetTile(y2, x2) != nullptr)
-				{
-					cout << endl;
-				}
+				//else if(map->GetTile(y2, x1) != nullptr || map->GetTile(y2, x2) != nullptr)
+				//{
+				//	cout << endl;
+				//}
 			}
 
 			else if (dirY < 0 && state != Data::Instance()->LADDER)
@@ -487,7 +497,52 @@ void Player::mapCollision(Map* map)
 					dirY = 0;
 				}
 			}
+		}*/
+
+		int xTemp = (x + (width / 2)) / TileSize;
+		int xMod = (x + (width/2)) % TileSize;
+
+		//on est sur la partie gauche de la tile
+		if (xMod < TileSize * 0.01)
+		{
+			xTemp--;
+			xTemp = max(xTemp, 0);
 		}
+		//on est sur la partie droite de la tile
+		//else if (xMod > TileSize * 0.99)
+		else if (xMod > TileSize * 0.99)
+		{
+			xTemp++;
+			xTemp = min(xTemp, Data::Instance()->TILE_X);
+		}
+
+		y1 = (y + dirY + height) / TileSize;
+
+		// Déplacement en bas
+		if (dirY > 0 && state != Data::Instance()->LADDER)
+		{
+			if ((map->GetTile(y1, xTemp) != nullptr && map->GetTile(y1, xTemp)->GetType() > TILE_TRAVERSABLE))
+			{
+				//Si la tile est une plateforme ou une tile solide, on y colle le joueur et
+				//on le déclare sur le sol (onGround).
+				y = y1 * TileSize;
+				y -= height;
+				dirY = 0;
+				isGrounding = true;
+				hasJump = false;
+				canJump = true;
+			}
+		}
+		// Déplacement vers le haut
+		else if (dirY < 0 && state != Data::Instance()->LADDER)
+		{
+			if (map->GetTile(y1, xTemp) != nullptr && map->GetTile(y1, xTemp)->GetType() > BLANK_TILE)
+			{
+				y = (y1 + 1) * TileSize;
+				dirY = 0;
+			}
+		}
+
 
 		//On teste la largeur du sprite (même technique que pour la hauteur précédemment)
 		if (i == width)
@@ -548,7 +603,7 @@ void Player::TakePower()
 		/* check de la collision et ramassage*/
 
 		int xPos = x / width;
-		int yPos = y / height;
+		int yPos = (int)floor(y / height);
 
 		retour = theMap->GetPower(xPos, yPos);
 

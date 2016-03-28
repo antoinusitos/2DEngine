@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "Tile.h"
 #include "Map.h"
+#include "Blocker.h"
+#include "EndingPlateform.h"
 
 Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap)
 {
@@ -132,11 +134,12 @@ void Power::Activate()
 {
 	if (currentType == type::green)
 	{
-		
+		map->GetEnding()->SetMove(true);
 	}
 	else if (currentType == type::red)
 	{
-		
+		map->GetBlockers().at(0)->Rotate(true);
+		map->SetCanFinish(true);
 	}
 	else if (currentType == type::yellow)
 	{
@@ -150,11 +153,13 @@ void Power::Desactivate()
 {
 	if (currentType == type::green)
 	{
-
+		map->GetEnding()->SetMove(false);
+		map->GetEnding()->SetRetour(true);
 	}
 	else if (currentType == type::red)
 	{
-
+		map->GetBlockers().at(0)->Rotate(false);
+		map->SetCanFinish(false);
 	}
 	else if (currentType == type::yellow)
 	{
