@@ -158,8 +158,8 @@ void Power::Desactivate()
 	}
 	else if (currentType == type::red)
 	{
-		map->GetBlockers().at(0)->Rotate(false);
-		map->SetCanFinish(false);
+		//map->GetBlockers().at(0)->Rotate(false);
+		//map->SetCanFinish(false);
 	}
 	else if (currentType == type::yellow)
 	{

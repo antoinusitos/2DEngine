@@ -18,7 +18,8 @@ public:
 		left,
 		action,
 		jump,
-		start
+		start, 
+		restart,
 	};
 
 	//Structures
@@ -31,6 +32,7 @@ public:
 		bool jump;
 		bool action;
 		bool start;
+		bool restart;
 	};
 
 	/* tile size = 32 */

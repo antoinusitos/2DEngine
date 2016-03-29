@@ -24,6 +24,7 @@ EndingPlateform::EndingPlateform(string tileName, int theX, int theY, Bomb* aBom
 	retour = false;
 	limitY = 32 * 5;
 	theBomb = aBomb;
+	theMap = aMap;
 }
 
 EndingPlateform::~EndingPlateform()
@@ -47,15 +48,11 @@ void EndingPlateform::Update(Input * input)
 			y = limitY;
 			move = false;
 		}
-		if (y + 32 >= limitY)
+		if (y - 32 <= limitY)
 		{
-			if (theMap->GetCanFinish())
+			if (!theMap->GetCanFinish())
 			{
-				// victory
-			}
-			else
-			{
-				//loose
+				cout << endl;
 			}
 		}
 	}

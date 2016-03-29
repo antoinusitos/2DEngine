@@ -190,7 +190,7 @@ void Map::GenerateTerrainWithFile()
 			}
 			else if (lignes[i][j] == 13)
 			{
-				powers.push_back(new Power(Power::type::yellow, 15.0f, j, i, this));
+				powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
 				canDraw = false;
 			}
 			else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58|| lignes[i][j] == 84 || lignes[i][j] == 85

@@ -31,6 +31,8 @@ public:
 	void SetStartPos(int X, int Y);
 	void TakePower();
 
+	bool GetWantsTheMenu();
+
 private:
 	float dirX;
 	float dirY;
@@ -61,6 +63,19 @@ private:
 
 	Power* takenPower;
 	time_t pickUpTime;
+
+	bool isInMenu;
+	int indexMenu;
+	bool drawMenu;
+	Text returnText;
+	Text quitText;
+	Font font;
+	unsigned int selectedfontSize;
+	unsigned int fontSize;
+	Color selectedFontColor;
+	Color fontColor;
+
+	bool wantsTheMenu;
 };
 
 #endif

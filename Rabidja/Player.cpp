@@ -13,6 +13,31 @@ Player::Player(Map* map)
 	else
 		sprite.setTexture(texture);
 
+	fontSize = 30;
+	fontColor = Color::Cyan;
+	returnText.setCharacterSize(fontSize);
+	quitText.setCharacterSize(fontSize);
+	returnText.setStyle(sf::Text::Bold);
+	quitText.setStyle(sf::Text::Bold);
+	returnText.setString("CONTINUE");
+	quitText.setString("QUIT");
+	int midWidth = Data::Instance()->SCREEN_WIDTH / 3;
+	int midHeight = Data::Instance()->SCREEN_HEIGHT / 3;
+	returnText.setPosition(Vector2f(midWidth, midHeight));
+	quitText.setPosition(Vector2f(midWidth, midHeight + 100));
+
+	if (!font.loadFromFile("font/arial.ttf"))
+	{
+		// Error
+		cout << "Error while loading the font of the player." << endl;
+	}
+	else
+	{
+		returnText.setFont(font);
+		quitText.setFont(font);
+
+	}
+
 	jumpState = Data::Instance()->jump;
 
 	theMap = map;
@@ -52,6 +77,10 @@ void Player::Initialize()
 	canJump = false;
 	takenPower = nullptr;
 	pickUpTime = time(0);
+
+	isInMenu = false;
+	indexMenu = 0;
+	wantsTheMenu = false;
 }
 
 void Player::SetLife(int theLife)
@@ -144,6 +173,32 @@ void Player::Draw(RenderWindow &window)
 		Debug::Instance()->AddDebug("PickUpTime: " + to_string(time(0) - pickUpTime), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("Power Attached: " + to_string(takenPower != nullptr ? true : false), true, 15, Color::Red);
 	}
+
+	if (isInMenu)
+	{
+		int midWidth = Data::Instance()->SCREEN_WIDTH / 3;
+		int midHeight = Data::Instance()->SCREEN_HEIGHT / 3;
+
+		int size = 300;
+		sf::RectangleShape rectangle(sf::Vector2f(size, size));
+		rectangle.setPosition(midWidth - (size / 4), midHeight - (size / 4));
+		rectangle.setFillColor(sf::Color(50, 50, 50));
+
+		if (indexMenu == 0)
+		{
+			quitText.setColor(selectedFontColor);
+			returnText.setColor(fontColor);
+		}
+		else if (indexMenu == 1)
+		{
+			quitText.setColor(fontColor);
+			returnText.setColor(selectedFontColor);
+		}
+
+		window.draw(rectangle);
+		window.draw(quitText);
+		window.draw(returnText);
+	}
 }
 
 void Player::Update(Input * input)
@@ -155,8 +210,14 @@ void Player::Update(Input * input)
 		Debug::Instance()->AddDebug("Touche E:" + to_string(input->getButton().action), false, 15, Color::Red);
 	}
 
-	if (state != Data::Instance()->DEAD)
+	if (state != Data::Instance()->DEAD && !isInMenu)
 	{
+		if (input->getButton().start)
+		{
+			isInMenu = true;
+			return;
+		}
+
 		dirX = 0;
 		dirY += Data::Instance()->GRAVITY_SPEED;
 
@@ -296,6 +357,30 @@ void Player::Update(Input * input)
 
 		//On gère le scrolling (fonction ci-dessous)
 		//centerScrolling(map);
+	}
+	else if(isInMenu)
+	{
+		if (input->getButton().action == true)
+		{
+			if (indexMenu == 0)
+			{
+				isInMenu = false;
+			}
+			else if(indexMenu == 1)
+			{
+				wantsTheMenu = true;
+			}
+		}
+		else if (input->getButton().up == true)
+		{
+			indexMenu--;
+			indexMenu = max(indexMenu, 0);
+		}
+		else if (input->getButton().down == true)
+		{
+			indexMenu++;
+			indexMenu = min(indexMenu, 1);
+		}
 	}
 }
 
@@ -602,8 +687,8 @@ void Player::TakePower()
 		Power* retour = nullptr;
 		/* check de la collision et ramassage*/
 
-		int xPos = x / width;
-		int yPos = (int)floor(y / height);
+		int xPos = x / 32;
+		int yPos = (int)floor(y / 32);
 
 		retour = theMap->GetPower(xPos, yPos);
 
@@ -613,4 +698,9 @@ void Player::TakePower()
 			takenPower->Take();
 		}
 	}
+}
+
+bool Player::GetWantsTheMenu()
+{
+	return wantsTheMenu;
 }

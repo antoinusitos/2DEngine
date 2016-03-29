@@ -38,7 +38,8 @@ private:
 		left, 
 		action, 
 		jump, 
-		start
+		start,
+		restart
 	};
 
 };

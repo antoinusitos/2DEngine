@@ -16,6 +16,7 @@ Input::Input()
 	button.jump = false;
 	button.action = false; 
 	button.start = false;
+	button.restart = false;
 }
 
 
@@ -56,6 +57,9 @@ void Input::setButton(int bouton, bool etat)
 		button.start = etat;
 		break;
 
+	case restart:
+		button.restart = etat;
+		break;
 	}
 
 }
@@ -122,6 +126,10 @@ void Input::getInput(RenderWindow &window)
 				button.start = true;
 				break;
 
+			case Keyboard::G:
+				button.restart = true;
+				break;
+
 			default:
 				break;
 			}
@@ -157,6 +165,10 @@ void Input::getInput(RenderWindow &window)
 
 			case Keyboard::P:
 				button.start = false;
+				break;
+
+			case Keyboard::G:
+				button.restart = false;
 				break;
 
 			default:
