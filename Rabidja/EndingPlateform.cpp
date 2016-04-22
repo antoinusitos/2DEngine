@@ -52,7 +52,16 @@ void EndingPlateform::Update(Input * input)
 		{
 			if (!theMap->GetCanFinish())
 			{
-				cout << endl;
+				theBomb->PlayExplosion();
+				cout << endl; // game over
+				sleep(Time(milliseconds(1500)));
+				theMap->SetGameOver(true);
+			}
+			else
+			{
+				cout << endl; // win 
+				sleep(Time(milliseconds(1500)));
+				theMap->SetGameOver(true);
 			}
 		}
 	}

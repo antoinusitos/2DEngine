@@ -4,6 +4,7 @@
 #include "Data.h"
 #include "Input.h"
 #include "Map.h"
+#include <SFML/Audio.hpp>
 #include "Debug.h"
 
 using namespace std;

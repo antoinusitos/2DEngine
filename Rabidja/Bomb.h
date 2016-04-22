@@ -14,9 +14,14 @@ public:
 
 	void UpdateY(int value);
 
+	void PlayExplosion();
+
 private:
 	int xSprite;
 	int ySprite;
+
+	sf::SoundBuffer bufferExplosion;
+	sf::Sound soundExplosion;
 };
 
 #endif

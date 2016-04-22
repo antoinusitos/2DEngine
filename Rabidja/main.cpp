@@ -10,11 +10,12 @@ void InitLevel1()
 
 	theMap->LoadLevel(3);
 	player->SetStartPos(theMap->GetStartX(), theMap->GetStartY());
+	theMap->PlayMusic();
 }
 
 int main(int argc, char *argv[])
 {
-	RenderWindow window(VideoMode(Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT, 32), "Game");
+	RenderWindow window(VideoMode(Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT, 32), "Bomb Defuser");
 
 	window.setFramerateLimit(60);
 
@@ -22,19 +23,58 @@ int main(int argc, char *argv[])
 
 	input = new Input();
 
-	if (!font.loadFromFile("font/arial.ttf"))
+	if (!font.loadFromFile("font/TourDeForce.ttf"))
 	{
 		// Error
-		cout << "Error while loading the font of the player." << endl;
+		cout << "Error while loading the font of the main." << endl;
 	}
 	else
 	{
 		lvl1.setFont(font);
-		lvl2.setFont(font);
-		lvl3.setFont(font);
-		quit.setFont(font);
-		title.setFont(font);
 	}
+
+	if (!texture.loadFromFile("graphics/menu2.png"))
+	{
+		// Error
+		cout << "Error while loading the texture of the main." << endl;
+	}
+	else
+		sprite.setTexture(texture);
+
+	if (!bufferSeletion.loadFromFile("sound/selection.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound selection of the main." << endl;
+	}
+	else
+	{
+		soundSeletion.setBuffer(bufferSeletion);
+	}
+
+	if (!bufferEnter.loadFromFile("sound/enter.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound enter of the main." << endl;
+	}
+	else
+	{
+		soundEnter.setBuffer(bufferEnter);
+	}
+
+	if (!bufferMenu.loadFromFile("sound/menu2.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound menu of the main." << endl;
+	}
+	else
+	{
+		soundMenu.setBuffer(bufferMenu);
+		soundMenu.play();
+	}
+
+	timeClignotement = 60;
+	timeRemaining = timeClignotement;
+	visible = true;
 
 	// Gameplay loop
 	while (window.isOpen())
@@ -45,87 +85,33 @@ int main(int argc, char *argv[])
 		{
 			window.clear();
 
-			lvl1.setColor(baseColor);
-			lvl2.setColor(baseColor);
-			lvl3.setColor(baseColor);
-			quit.setColor(baseColor);
-			title.setColor(baseColor);
-
 			lvl1.setCharacterSize(20);
-			lvl2.setCharacterSize(20);
-			lvl3.setCharacterSize(20);
-			quit.setCharacterSize(20);
-			title.setCharacterSize(40);
 
 			lvl1.setStyle(sf::Text::Bold);
-			lvl2.setStyle(sf::Text::Bold);
-			lvl3.setStyle(sf::Text::Bold);
-			quit.setStyle(sf::Text::Bold);
-			title.setStyle(sf::Text::Bold);
 
-			lvl1.setString("Level 1");
-			lvl2.setString("Level 2");
-			lvl3.setString("Level 3");
-			quit.setString("Quit");
-			title.setString("BOMB DEFUSER");
+			lvl1.setString("PRESS START");
 
-			int midWidth = Data::Instance()->SCREEN_WIDTH / 3;
-			int midHeight = Data::Instance()->SCREEN_HEIGHT / 3;
+			int midWidth = Data::Instance()->SCREEN_WIDTH / 6;
+			int midHeight = Data::Instance()->SCREEN_WIDTH / 4;
 
-			int size = 400;
-			sf::RectangleShape rectangle(sf::Vector2f(size, size));
-			rectangle.setPosition(midWidth - (size / 4), midHeight - (size / 4));
-			rectangle.setFillColor(sf::Color(50, 50, 50));
+			sprite.setTextureRect(sf::IntRect(0, 0, Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT));
 
-			window.draw(rectangle);
+			window.draw(sprite);
 
-			if (indexMenu == 0)
-			{
-				lvl1.setColor(selectedColor);
-			}
-			else if (indexMenu == 1)
-			{
-				lvl2.setColor(selectedColor);
-			}
-			else if (indexMenu == 2)
-			{
-				lvl3.setColor(selectedColor);
-			}
-			else if (indexMenu == 3)
-			{
-				quit.setColor(selectedColor);
-			}
-
-			lvl1.setPosition(Vector2f(midWidth, midHeight - 100));
-			lvl2.setPosition(Vector2f(midWidth, midHeight));
-			lvl3.setPosition(Vector2f(midWidth, midHeight + 100));
-			quit.setPosition(Vector2f(midWidth, midHeight + 200));
-			title.setPosition(Vector2f(midWidth - 100, midHeight / 8));
+			lvl1.setPosition(Vector2f(midWidth, midHeight));
 
 			window.draw(lvl1);
-			window.draw(lvl2);
-			window.draw(lvl3);
-			window.draw(quit);
-			window.draw(title);
 
 			window.display();
-
-			if (input->getButton().down == true)
-			{
-				indexMenu ++;
-				indexMenu = min(3, indexMenu);
-			}
-			else if(input->getButton().up == true)
-			{
-				indexMenu --;
-				indexMenu = max(0, indexMenu);
-			}
-			else if (input->getButton().action == true)
+			
+			if (input->getButton().action == true)
 			{
 				if (indexMenu == 0)
 				{
+					soundEnter.play();
 					inMenu = false;
 					InitLevel1();
+					soundMenu.stop();
 				}
 				else
 				{
@@ -133,7 +119,20 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			sleep(Time(milliseconds(100)));
+			timeRemaining--;
+			if (timeRemaining <= 0)
+			{
+				visible = !visible;
+				if (visible)
+				{
+					lvl1.setColor(baseColor);
+				}
+				else
+				{
+					lvl1.setColor(selectedColor);
+				}
+				timeRemaining = timeClignotement;
+			}
 		}
 		else
 		{
@@ -141,6 +140,12 @@ int main(int argc, char *argv[])
 			if (input->getButton().restart == true)
 			{
 				InitLevel1();
+			}
+			else if (theMap->GetGameOver())
+			{
+				theMap->StopMusic();
+				soundMenu.play();
+				inMenu = true;
 			}
 			else
 			{

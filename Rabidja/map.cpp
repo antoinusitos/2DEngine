@@ -53,10 +53,21 @@ Map::Map()
 	else
 		tileSetTest.setTexture(tileSetTestTexture);
 
+	if (!bufferMusic.loadFromFile("sound/map1.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound jump of the player." << endl;
+	}
+	else
+	{
+		soundMusic.setBuffer(bufferMusic);
+	}
+
 	//GenerateTerrain();
 	playerStartX = 0;
 	playerStartY = 0;
 	canFinish = false;
+	gameOver = false;
 }
 
 Map::~Map()
@@ -354,4 +365,24 @@ void Map::SetCanFinish(bool state)
 bool Map::GetCanFinish()
 {
 	return canFinish;
+}
+
+void Map::PlayMusic()
+{
+	soundMusic.play();
+}
+
+void Map::StopMusic()
+{
+	soundMusic.stop();
+}
+
+bool Map::GetGameOver()
+{
+	return gameOver;
+}
+
+void Map::SetGameOver(bool state)
+{
+	gameOver = state;
 }

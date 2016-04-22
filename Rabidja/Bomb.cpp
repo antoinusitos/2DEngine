@@ -5,7 +5,7 @@ Bomb::Bomb(string tileName, int theX, int theY)
 	if (!texture.loadFromFile("graphics/" + tileName + ".png"))
 	{
 		// Error
-		cout << "Error while loading the texture of the player." << endl;
+		cout << "Error while loading the texture of the bomb." << endl;
 	}
 	else
 	{
@@ -13,6 +13,17 @@ Bomb::Bomb(string tileName, int theX, int theY)
 		xSprite = 5;
 		sprite.setTexture(texture);
 	}
+
+	if (!bufferExplosion.loadFromFile("sound/explosion.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound explosion of the bomb." << endl;
+	}
+	else
+	{
+		soundExplosion.setBuffer(bufferExplosion);
+	}
+
 	width = 32;
 	height = 32;
 	x = theX * width;
@@ -38,4 +49,9 @@ void Bomb::Update(Input * input)
 void Bomb::UpdateY(int value)
 {
 	y = value;
+}
+
+void Bomb::PlayExplosion()
+{
+	soundExplosion.play();
 }

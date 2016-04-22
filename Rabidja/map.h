@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include "Data.h"
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -61,6 +62,12 @@ public:
 	void SetCanFinish(bool state);
 	bool GetCanFinish();
 
+	void PlayMusic();
+	void StopMusic();
+
+	bool GetGameOver();
+	void SetGameOver(bool state);
+
 private:
 	//Variables de la classe en accès privé
 
@@ -98,5 +105,10 @@ private:
 	Bomb* theBomb;
 
 	bool canFinish;
+
+	sf::SoundBuffer bufferMusic;
+	sf::Sound soundMusic;
+
+	bool gameOver;
 };
 #endif

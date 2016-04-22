@@ -16,10 +16,22 @@ sf::Clock theClock;
 bool inMenu = true;
 int indexMenu;
 Text lvl1;
-Text lvl2;
-Text lvl3;
-Text quit;
-Text title;
-Color selectedColor = Color::Red;
-Color baseColor = Color::Green;
+Color selectedColor = Color::Color(228, 246, 228, 255);
+Color baseColor = Color::Color(228, 246, 228, 0);
 Font font;
+
+float timeClignotement;
+float timeRemaining;
+bool visible;
+
+sf::SoundBuffer bufferSeletion;
+sf::Sound soundSeletion;
+
+sf::SoundBuffer bufferEnter;
+sf::Sound soundEnter;
+
+sf::SoundBuffer bufferMenu;
+sf::Sound soundMenu;
+
+sf::Texture texture;
+sf::Sprite sprite;

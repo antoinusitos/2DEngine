@@ -5,13 +5,65 @@ using namespace sf;
 
 Player::Player(Map* map)
 {
-	if (!texture.loadFromFile("graphics/rabidja.png"))
+	if (!texture.loadFromFile("graphics/testCharactertileset.png"))
 	{
 		// Error
 		cout << "Error while loading the texture of the player." << endl;
 	}
 	else
 		sprite.setTexture(texture);
+
+	
+	if (!bufferJump.loadFromFile("sound/jump.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound jump of the player." << endl;
+	}
+	else
+	{
+		soundJump.setBuffer(bufferJump);
+	}
+
+	if (!bufferPickup.loadFromFile("sound/pickup.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound pickup of the player." << endl;
+	}
+	else
+	{
+		soundPickup.setBuffer(bufferPickup);
+	}
+
+	if (!bufferDeath.loadFromFile("sound/death.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound death of the player." << endl;
+	}
+	else
+	{
+		soundDeath.setBuffer(bufferDeath);
+	}
+
+	if (!bufferDead.loadFromFile("sound/dead.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound dead of the player." << endl;
+	}
+	else
+	{
+		soundDead.setBuffer(bufferDead);
+	}
+
+
+	if (!bufferFoot.loadFromFile("sound/footstep.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound footstep of the player." << endl;
+	}
+	else
+	{
+		soundFoot.setBuffer(bufferFoot);
+	}
 
 	fontSize = 30;
 	fontColor = Color::Cyan;
@@ -42,7 +94,7 @@ Player::Player(Map* map)
 
 	theMap = map;
 
-	debug = true;
+	debug = false;
 
 	Initialize();
 }
@@ -61,7 +113,7 @@ void Player::Initialize()
 	life = 3;
 	frameNumber = 0;
 	frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-	frameMax = 8;
+	frameMax = 2;
 	x = 0;
 	y = 0;
 	height = Data::Instance()->PLAYER_HEIGTH;
@@ -77,6 +129,8 @@ void Player::Initialize()
 	canJump = false;
 	takenPower = nullptr;
 	pickUpTime = time(0);
+	timeInAir = 0;
+	timeInAirToDeath = 15;
 
 	isInMenu = false;
 	indexMenu = 0;
@@ -107,6 +161,8 @@ void Player::Draw(RenderWindow &window)
 {
 	if (frameTimer <= 0)
 	{
+		if(state == Data::Instance()->WALK)
+			soundFoot.play();
 		//On le réinitialise
 		frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 
@@ -127,18 +183,18 @@ void Player::Draw(RenderWindow &window)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, height, -width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, /*height*/0, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect(frameNumber * width, height, width, height));
+			sprite.setTextureRect(sf::IntRect(frameNumber * width, /*height*/0, width, height));
 		}
 	}
 	else if (state == Data::Instance()->IDLE)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 0, -width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber * width) + width, 0, -width, height));
 		}
 		else
 		{
@@ -149,12 +205,16 @@ void Player::Draw(RenderWindow &window)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 2 * height, -width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 0, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect(frameNumber * width, 2 * height, width, height));
+			sprite.setTextureRect(sf::IntRect(frameNumber * width, 0, width, height));
 		}
+	}
+	else if (state == Data::Instance()->LADDER)
+	{
+		sprite.setTextureRect(sf::IntRect(2 * width, 0, width, height));
 	}
 	window.draw(sprite);
 	
@@ -248,7 +308,7 @@ void Player::Update(Input * input)
 					state = Data::Instance()->WALK;
 					frameNumber = 0;
 					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-					frameMax = 8;
+					frameMax = 2;
 				}
 			}
 		}
@@ -279,7 +339,7 @@ void Player::Update(Input * input)
 					state = Data::Instance()->WALK;
 					frameNumber = 0;
 					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-					frameMax = 8;
+					frameMax = 2;
 				}
 			}
 		}
@@ -295,7 +355,7 @@ void Player::Update(Input * input)
 				state = Data::Instance()->IDLE;
 				frameNumber = 0;
 				frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
-				frameMax = 8;
+				frameMax = 2;
 			}
 
 		}
@@ -309,6 +369,7 @@ void Player::Update(Input * input)
 
 		if (state == Data::Instance()->LADDER)
 		{
+			timeInAir = 0;
 			dirY = 0;
 		}
 
@@ -317,6 +378,8 @@ void Player::Update(Input * input)
 		{
 			if (isGrounding == true && canJump)
 			{
+				prevY = y;
+				soundJump.play();
 				dirY -= Data::Instance()->JUMP_HEIGHT;
 				isGrounding = false;
 				hasJump = true;
@@ -353,6 +416,23 @@ void Player::Update(Input * input)
 				frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 				frameMax = 2;
 			}
+			if (prevY <= y)
+			{
+				timeInAir++;
+				prevY = y;
+			}
+		}
+
+		else if(timeInAir >= timeInAirToDeath && state != Data::Instance()->LADDER)
+		{
+   			cout << endl;
+			soundDeath.play();
+			state = Data::Instance()->DEAD;
+			sprite.setTextureRect(sf::IntRect(3 * width, 0, width, height));
+		}
+		else
+		{
+			timeInAir = 0;
 		}
 
 		//On gère le scrolling (fonction ci-dessous)
@@ -381,6 +461,13 @@ void Player::Update(Input * input)
 			indexMenu++;
 			indexMenu = min(indexMenu, 1);
 		}
+	}
+	else
+	{
+		sleep(Time(milliseconds(500)));
+		soundDead.play();
+		sleep(Time(milliseconds(1000)));
+		theMap->SetGameOver(true);
 	}
 }
 
@@ -678,6 +765,7 @@ void Player::TakePower()
 {
 	if (takenPower != nullptr)
 	{
+		takenPower->PlayPut();
 		takenPower->Release();
 		takenPower = nullptr;
 	}
@@ -696,6 +784,7 @@ void Player::TakePower()
 		{
 			takenPower = retour;
 			takenPower->Take();
+			soundPickup.play();
 		}
 	}
 }

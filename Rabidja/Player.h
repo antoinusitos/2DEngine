@@ -76,6 +76,25 @@ private:
 	Color fontColor;
 
 	bool wantsTheMenu;
+
+	sf::SoundBuffer bufferJump;
+	sf::Sound soundJump;
+
+	sf::SoundBuffer bufferPickup;
+	sf::Sound soundPickup;
+
+	sf::SoundBuffer bufferFoot;
+	sf::Sound soundFoot;
+
+	sf::SoundBuffer bufferDeath;
+	sf::Sound soundDeath;
+
+	sf::SoundBuffer bufferDead;
+	sf::Sound soundDead;
+
+	float timeInAir;
+	float timeInAirToDeath;
+	float prevY;
 };
 
 #endif

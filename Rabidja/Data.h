@@ -71,7 +71,7 @@ public:
 	/* height of the player = 32 */
 	const int PLAYER_HEIGTH = 32 ;
 	/* time = 5 */
-	const int TIME_BETWEEN_2_FRAMES_PLAYER = 5;
+	const int TIME_BETWEEN_2_FRAMES_PLAYER = 20;
 
 	/* State of the player */
 	const int IDLE = 0;

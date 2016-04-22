@@ -41,6 +41,26 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 		sprite.setTexture(texture);
 	}
 
+	if (!bufferPut.loadFromFile("sound/put.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound put of the power." << endl;
+	}
+	else
+	{
+		soundPut.setBuffer(bufferPut);
+	}
+
+	if (!bufferReturn.loadFromFile("sound/return.wav"))
+	{
+		// Error
+		cout << "Error while loading the return put of the power." << endl;
+	}
+	else
+	{
+		soundReturn.setBuffer(bufferReturn);
+	}
+
 	timeToRespawn = aTimeToRespawn;
 	currentTime = 0.0f;
 	posX = aPosX * width;
@@ -128,10 +148,12 @@ void Power::Reset()
 	isAttached = true;
 	pickUpTime = time(0);
 	Desactivate();
+	soundReturn.play();
 }
 
 void Power::Activate()
 {
+	PlayPut();
 	if (currentType == type::green)
 	{
 		map->GetEnding()->SetMove(true);
@@ -167,4 +189,9 @@ void Power::Desactivate()
 		map->GetTile(55)->Show();
 		map->GetTile(65)->Show();
 	}
+}
+
+void Power::PlayPut()
+{
+	soundPut.play();
 }

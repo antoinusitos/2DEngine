@@ -36,6 +36,8 @@ public:
 	void Activate();
 	void Desactivate();
 
+	void PlayPut();
+
 private:
 
 	float timeToRespawn;
@@ -57,6 +59,12 @@ private:
 	int ySprite;
 
 	Map* map;
+
+	sf::SoundBuffer bufferPut;
+	sf::Sound soundPut;
+
+	sf::SoundBuffer bufferReturn;
+	sf::Sound soundReturn;
 };
 
 #endif
