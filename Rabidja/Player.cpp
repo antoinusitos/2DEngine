@@ -54,6 +54,26 @@ Player::Player(Map* map)
 		soundDead.setBuffer(bufferDead);
 	}
 
+	if (!bufferSeletion.loadFromFile("sound/selection.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound selection of the main." << endl;
+	}
+	else
+	{
+		soundSeletion.setBuffer(bufferSeletion);
+	}
+
+	if (!bufferEnter.loadFromFile("sound/enter.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound enter of the main." << endl;
+	}
+	else
+	{
+		soundEnter.setBuffer(bufferEnter);
+	}
+
 
 	if (!bufferFoot.loadFromFile("sound/footstep.wav"))
 	{
@@ -442,6 +462,7 @@ void Player::Update(Input * input)
 	{
 		if (input->getButton().action == true)
 		{
+			soundEnter.play();
 			if (indexMenu == 0)
 			{
 				isInMenu = false;
@@ -453,11 +474,13 @@ void Player::Update(Input * input)
 		}
 		else if (input->getButton().up == true)
 		{
+			soundSeletion.play();
 			indexMenu--;
 			indexMenu = max(indexMenu, 0);
 		}
 		else if (input->getButton().down == true)
 		{
+			soundSeletion.play();
 			indexMenu++;
 			indexMenu = min(indexMenu, 1);
 		}

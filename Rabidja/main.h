@@ -35,3 +35,28 @@ sf::Sound soundMenu;
 
 sf::Texture texture;
 sf::Sprite sprite;
+
+sf::Texture textureBoutonGauche;
+sf::Sprite spriteBoutonGauche;
+float offsetBG;
+bool monteBG;
+
+sf::Texture textureBoutonDroite;
+sf::Sprite spriteBoutonDroite;
+float offsetBD;
+bool monteBD;
+
+sf::Texture textureBoutonAction;
+sf::Sprite spriteBoutonAction;
+float offsetBA;
+bool monteBA;
+
+sf::Texture textureBoutonStart;
+sf::Sprite spriteBoutonStart;
+float offsetBS;
+bool monteBS;
+
+sf::Texture textureBoutonSaut;
+sf::Sprite spriteBoutonSaut;
+float offsetBJ; 
+bool monteBJ;

@@ -95,6 +95,12 @@ private:
 	float timeInAir;
 	float timeInAirToDeath;
 	float prevY;
+
+	sf::SoundBuffer bufferSeletion;
+	sf::Sound soundSeletion;
+
+	sf::SoundBuffer bufferEnter;
+	sf::Sound soundEnter;
 };
 
 #endif
