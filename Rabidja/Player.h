@@ -101,6 +101,8 @@ private:
 
 	sf::SoundBuffer bufferEnter;
 	sf::Sound soundEnter;
+
+	int animSlower;
 };
 
 #endif

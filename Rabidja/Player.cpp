@@ -6,7 +6,8 @@ using namespace sf;
 
 Player::Player(Map* map)
 {
-	if (!texture.loadFromFile("graphics/testCharactertileset.png"))
+	//if (!texture.loadFromFile("graphics/testCharactertileset.png"))
+	if (!texture.loadFromFile("graphics/TileSetCharacter.png"))
 	{
 		// Error
 		cout << "Error while loading the texture of the player." << endl;
@@ -153,6 +154,7 @@ void Player::Initialize()
 	timeInAir = 0;
 	timeInAirToDeath = 15;
 
+	animSlower = 2;
 	isInMenu = false;
 	indexMenu = 0;
 	wantsTheMenu = false;
@@ -191,7 +193,7 @@ void Player::Draw(RenderWindow &window)
 		frameNumber++;
 
 		//Mais si on dépasse la frame max, il faut revenir à la première :
-		if (frameNumber >= frameMax)
+		if ((frameNumber / animSlower) >= frameMax)
 			frameNumber = 0;
 	}
 	//Sinon, on décrémente notre timer
@@ -204,22 +206,22 @@ void Player::Draw(RenderWindow &window)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, /*height*/0, -width, height));
+			sprite.setTextureRect(sf::IntRect(((frameNumber/ animSlower) + 1) * width, height * 2, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect(frameNumber * width, /*height*/0, width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height * 2 , width, height));
 		}
 	}
 	else if (state == Data::Instance()->IDLE)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber * width) + width, 0, -width, height));
+			sprite.setTextureRect(sf::IntRect(((frameNumber / animSlower) * width) + width, height, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect(frameNumber * width, 0, width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height, width, height));
 		}
 	}
 	else if (state == Data::Instance()->JUMP1)
@@ -235,7 +237,11 @@ void Player::Draw(RenderWindow &window)
 	}
 	else if (state == Data::Instance()->LADDER)
 	{
-		sprite.setTextureRect(sf::IntRect(2 * width, 0, width, height));
+		sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 0, width, height));
+	}
+	else if (state == Data::Instance()->DEAD)
+	{
+		sprite.setTextureRect(sf::IntRect(0, height * 3, width, height));
 	}
 	window.draw(sprite);
 	
@@ -413,7 +419,11 @@ void Player::Update(Input * input)
 			if (CheckCollision(theMap))
 			{
 				if (state != Data::Instance()->LADDER)
+				{
 					state = Data::Instance()->LADDER;
+					frameNumber = 0;
+					frameMax = 3;
+				}
 				dirY = -Data::Instance()->CLIMB_HEIGHT;
 			}
 		}
@@ -422,7 +432,11 @@ void Player::Update(Input * input)
 			if (CheckCollisionBottom(theMap))
 			{
 				if (state != Data::Instance()->LADDER)
+				{
 					state = Data::Instance()->LADDER;
+					frameNumber = 0;
+					frameMax = 3;
+				}
 				dirY = Data::Instance()->CLIMB_HEIGHT;
 			}
 		}
@@ -617,7 +631,7 @@ void Player::mapCollision(Map* map)
 			else if (dirX < 0)
 			{
 				bool hitEntity = false;
-				if (x2 > map->GetElevator()->GetX() || x2 < map->GetElevator()->GetX() + map->GetElevator()->GetWidth() && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
 				{
 					hitEntity = true;
 					map->GetElevator()->SetPlayer(this);

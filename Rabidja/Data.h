@@ -70,7 +70,7 @@ public:
 	const int PLAYER_WIDTH = 32;
 	/* height of the player = 32 */
 	const int PLAYER_HEIGTH = 32 ;
-	/* time = 5 */
+	/* time = 20 */
 	const int TIME_BETWEEN_2_FRAMES_PLAYER = 20;
 
 	/* State of the player */
