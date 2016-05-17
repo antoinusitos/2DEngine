@@ -16,6 +16,7 @@ class Power;
 class Blocker;
 class EndingPlateform;
 class Bomb;
+class Elevator;
 
 class Map
 {
@@ -31,10 +32,12 @@ public:
 	void DrawTiles(sf::RenderWindow &window);
 	void DrawPowers(sf::RenderWindow &window);
 	void DrawBlockers(sf::RenderWindow &window);
+	void DrawElevators(sf::RenderWindow &window);
 	void DrawEnding(sf::RenderWindow &window);
 	void DrawBomb(sf::RenderWindow &window);
 	void UpdatePowers();
 	void UpdateBlockers();
+	void UpdateElevators();
 	void UpdateEnding();
 	void UpdateBomb();
 
@@ -55,6 +58,8 @@ public:
 	void SetRunningPower(Power* thePower);
 	void ResetRunningPower();
 	Power* GetRunningPower();
+
+	Elevator* GetElevator();
 
 	vector<Blocker*> GetBlockers();
 	EndingPlateform* GetEnding();
@@ -101,6 +106,8 @@ private:
 	vector <Blocker*> blockers;
 
 	EndingPlateform* theEndingPlateform;
+
+	Elevator* theElevator;
 
 	Bomb* theBomb;
 

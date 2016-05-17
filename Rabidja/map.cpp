@@ -3,6 +3,7 @@
 #include "Power.h"
 #include "Blocker.h"
 #include "EndingPlateform.h"
+#include "Elevator.h"
 #include "Bomb.h"
 
 #include <iostream>
@@ -108,6 +109,11 @@ void Map::DrawBlockers(sf::RenderWindow & window)
 	}
 }
 
+void Map::DrawElevators(sf::RenderWindow & window)
+{
+	theElevator->Draw(window);
+}
+
 void Map::DrawEnding(sf::RenderWindow & window)
 {
 	theEndingPlateform->Draw(window);
@@ -132,6 +138,11 @@ void Map::UpdateBlockers()
 	{
 		blockers.at(i)->Update(nullptr);
 	}
+}
+
+void Map::UpdateElevators()
+{
+	theElevator->Update(nullptr);
 }
 
 void Map::UpdateEnding()
@@ -217,6 +228,11 @@ void Map::GenerateTerrainWithFile()
 			else if (lignes[i][j] == 83)
 			{
 				theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+				canDraw = false;
+			}
+			else if (lignes[i][j] == 80)
+			{
+				theElevator = new Elevator("level1TileSheet2", j, i, this);
 				canDraw = false;
 			}
 			else if (lignes[i][j] == 05)
@@ -345,6 +361,11 @@ void Map::ResetRunningPower()
 Power* Map::GetRunningPower()
 {
 	return runningPower;
+}
+
+Elevator* Map::GetElevator()
+{
+	return theElevator;
 }
 
 vector<Blocker*> Map::GetBlockers()

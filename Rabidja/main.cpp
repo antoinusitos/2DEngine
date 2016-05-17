@@ -8,7 +8,7 @@ void InitLevel1()
 	player->SetX(100);
 	player->SetY(100);
 
-	theMap->LoadLevel(3);
+	theMap->LoadLevel(4);
 	player->SetStartPos(theMap->GetStartX(), theMap->GetStartY());
 	theMap->PlayMusic();
 }
@@ -328,6 +328,9 @@ int main(int argc, char *argv[])
 
 				theMap->UpdateEnding();
 				theMap->DrawEnding(window);
+
+				theMap->UpdateElevators();
+				theMap->DrawElevators(window);
 
 				player->Draw(window);
 

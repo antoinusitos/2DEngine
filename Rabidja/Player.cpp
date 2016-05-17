@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Elevator.h"
 
 using namespace std;
 using namespace sf;
@@ -561,6 +562,18 @@ void Player::mapCollision(Map* map)
 			//Si on a un mouvement à droite
 			if (dirX > 0)
 			{
+				bool hitEntity = false;
+
+				if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				{
+					hitEntity = true;
+					map->GetElevator()->SetPlayer(this);
+				}
+				else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+				{
+					map->GetElevator()->SetPlayer(nullptr);
+				}
+
 				//On vérifie si les tiles recouvertes sont solides
 				if (map->GetTile(y1, x2)!= nullptr &&  map->GetTile(y1, x2)->GetType() > BLANK_TILE || map->GetTile(y2, x2) != nullptr && map->GetTile(y2, x2)->GetType() > BLANK_TILE)
 				{
@@ -568,6 +581,12 @@ void Player::mapCollision(Map* map)
 					// de ces tiles, en mettant à jour ses coordonnées. Enfin, on
 					//réinitialise son vecteur déplacement (dirX).
 
+					x = x2 * TileSize;
+					x -= width + 1;
+					dirX = 0;
+				}
+				else if (hitEntity == true)
+				{
 					x = x2 * TileSize;
 					x -= width + 1;
 					dirX = 0;
@@ -597,11 +616,27 @@ void Player::mapCollision(Map* map)
 			//Même chose à gauche
 			else if (dirX < 0)
 			{
+				bool hitEntity = false;
+				if (x2 > map->GetElevator()->GetX() || x2 < map->GetElevator()->GetX() + map->GetElevator()->GetWidth() && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				{
+					hitEntity = true;
+					map->GetElevator()->SetPlayer(this);
+				}
+				else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+				{
+					map->GetElevator()->SetPlayer(nullptr);
+				}
+
 				if (map->GetTile(y1, x1) != nullptr && map->GetTile(y1, x1)->GetType() > BLANK_TILE || map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > BLANK_TILE)
 				{
 					x = (x1 + 1) * TileSize;
 					dirX = 0;
 				}
+				/*else if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				{
+					x = (x1 + 1) * TileSize;
+					dirX = 0;
+				}*/
 				else
 				{
 					//pose le power dans le generateur
@@ -727,6 +762,16 @@ void Player::mapCollision(Map* map)
 				hasJump = false;
 				canJump = true;
 			}
+			else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+			{
+				map->GetElevator()->SetPlayer(nullptr);
+			}
+			/*else if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+			{
+				x = (x1 + 1) * TileSize;
+				dirX = 0;
+				y = map->GetElevator()->GetY() - map->GetElevator()->GetHeight() - 5;
+			}*/
 		}
 		// Déplacement vers le haut
 		else if (dirY < 0 && state != Data::Instance()->LADDER)
@@ -736,8 +781,20 @@ void Player::mapCollision(Map* map)
 				y = (y1 + 1) * TileSize;
 				dirY = 0;
 			}
+			else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+			{
+				map->GetElevator()->SetPlayer(nullptr);
+			}
+			/*else if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+			{
+				y = map->GetElevator()->GetY() - map->GetElevator()->GetHeight() - 5;
+			}*/
 		}
-
+		else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+		{
+			map->GetElevator()->SetPlayer(nullptr);
+		}
+		
 
 		//On teste la largeur du sprite (même technique que pour la hauteur précédemment)
 		if (i == width)
