@@ -124,35 +124,35 @@ void Map::DrawBomb(sf::RenderWindow & window)
 	theBomb->Draw(window);
 }
 
-void Map::UpdatePowers()
+void Map::UpdatePowers(sf::Time time)
 {
 	for (unsigned i = 0; i < powers.size(); i++)
 	{
-		powers.at(i)->Update(nullptr);
+		powers.at(i)->Update(nullptr, time);
 	}
 }
 
-void Map::UpdateBlockers()
+void Map::UpdateBlockers(sf::Time time)
 {
 	for (unsigned i = 0; i < blockers.size(); i++)
 	{
-		blockers.at(i)->Update(nullptr);
+		blockers.at(i)->Update(nullptr, time);
 	}
 }
 
-void Map::UpdateElevators()
+void Map::UpdateElevators(sf::Time time)
 {
-	theElevator->Update(nullptr);
+	theElevator->Update(nullptr, time);
 }
 
-void Map::UpdateEnding()
+void Map::UpdateEnding(sf::Time time)
 {
-	theEndingPlateform->Update(nullptr);
+	theEndingPlateform->Update(nullptr, time);
 }
 
-void Map::UpdateBomb()
+void Map::UpdateBomb(sf::Time time)
 {
-	theBomb->Update(nullptr);
+	theBomb->Update(nullptr, time);
 }
 
 void Map::AddTile(string name, int posX, int posY, int type)

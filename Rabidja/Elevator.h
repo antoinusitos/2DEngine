@@ -13,7 +13,7 @@ public:
 	~Elevator();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, Time time) override;
 
 	void SetPlayer(Player* thePl);
 	Player* GetPlayer();

@@ -13,7 +13,7 @@ public:
 	~EndingPlateform();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, Time time) override;
 
 	void SetMove(bool state);
 	void SetRetour(bool state);

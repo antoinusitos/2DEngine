@@ -37,7 +37,7 @@ void EndingPlateform::Draw(sf::RenderWindow & window)
 	window.draw(sprite);
 }
 
-void EndingPlateform::Update(Input * input)
+void EndingPlateform::Update(Input * input, Time time)
 {
 	if (move)
 	{

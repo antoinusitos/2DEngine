@@ -31,7 +31,7 @@ void Blocker::Draw(sf::RenderWindow & window)
 	window.draw(sprite);
 }
 
-void Blocker::Update(Input * input)
+void Blocker::Update(Input * input, Time time)
 {
 }
 

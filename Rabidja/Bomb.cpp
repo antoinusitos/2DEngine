@@ -30,6 +30,8 @@ Bomb::Bomb(string tileName, int theX, int theY)
 	y = theY * height;
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
+	currentTime = 0;
+	timeToExplode = 10.0f;
 }
 
 Bomb::~Bomb()
@@ -42,8 +44,10 @@ void Bomb::Draw(sf::RenderWindow & window)
 	window.draw(sprite);
 }
 
-void Bomb::Update(Input * input)
+void Bomb::Update(Input * input, Time time)
 {
+	currentTime += time.asSeconds();
+
 }
 
 void Bomb::UpdateY(int value)

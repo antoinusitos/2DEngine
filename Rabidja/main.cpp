@@ -275,6 +275,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			
+
 			timeRemaining--;
 			if (timeRemaining <= 0)
 			{
@@ -308,28 +310,28 @@ int main(int argc, char *argv[])
 
 				Time time = theClock.restart();
 
-				player->Update(input);
+				player->Update(input, time);
 				player->mapCollision(theMap);
 
 				window.clear();
 
 				theMap->DrawBackground(window);
 
-				theMap->UpdateBomb();
+				theMap->UpdateBomb(time);
 				theMap->DrawBomb(window);
 
 				theMap->DrawTiles(window);
 
-				theMap->UpdatePowers();
+				theMap->UpdatePowers(time);
 				theMap->DrawPowers(window);
 
-				theMap->UpdateBlockers();
+				theMap->UpdateBlockers(time);
 				theMap->DrawBlockers(window);
 
-				theMap->UpdateEnding();
+				theMap->UpdateEnding(time);
 				theMap->DrawEnding(window);
 
-				theMap->UpdateElevators();
+				theMap->UpdateElevators(time);
 				theMap->DrawElevators(window);
 
 				player->Draw(window);

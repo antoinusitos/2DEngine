@@ -24,7 +24,7 @@ public:
 	float GetSpeed();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, sf::Time time) override;
 	bool CheckCollision(Map* map);
 	bool CheckCollisionBottom(Map* map);
 	void mapCollision(Map* map);
@@ -62,7 +62,8 @@ private:
 	Map* theMap;
 
 	Power* takenPower;
-	time_t pickUpTime;
+	float pickUpTime;
+	float currentTime;
 
 	bool isInMenu;
 	int indexMenu;

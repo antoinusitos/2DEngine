@@ -36,7 +36,7 @@ void Elevator::Draw(sf::RenderWindow & window)
 	window.draw(sprite);
 }
 
-void Elevator::Update(Input * input)
+void Elevator::Update(Input * input, Time time)
 {
 	if (up)
 	{

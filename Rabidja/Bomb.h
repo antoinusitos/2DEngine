@@ -10,7 +10,7 @@ public:
 	~Bomb();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, Time time) override;
 
 	void UpdateY(int value);
 
@@ -22,6 +22,9 @@ private:
 
 	sf::SoundBuffer bufferExplosion;
 	sf::Sound soundExplosion;
+
+	float timeToExplode;
+	float currentTime;
 };
 
 #endif
