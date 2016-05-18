@@ -19,7 +19,7 @@ Elevator::Elevator(string tileName, int theX, int theY, Map* aMap)
 	yPos = y;
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
-	limitY = 32 * 16;
+	limitY = 32 * 2;
 	theMap = aMap;
 	thePlayer = nullptr;
 }
