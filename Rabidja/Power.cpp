@@ -67,10 +67,11 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 	posY = aPosY * height;
 	x = aPosX * width;
 	y = aPosY * height;
-	debug = true;
+	debug = false;
 	isAttached = true;
 	canbePicked = true;
 	map = theMap;
+	pickUpTime = 0.0f;
 }
 
 Power::~Power()
@@ -98,7 +99,7 @@ void Power::Update(Input * input, sf::Time time)
 	if (!isAttached)
 	{
 		pickUpTime += time.asMilliseconds();
-		if (pickUpTime >= timeToRespawn)
+		if (pickUpTime / 1000 >= timeToRespawn)
 		{
 			Reset();
 			map->ResetRunningPower();

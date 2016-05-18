@@ -42,7 +42,7 @@ private:
 
 	float timeToRespawn;
 	float currentTime;
-	time_t pickUpTime;
+	float pickUpTime;
 
 	type currentType;
 	

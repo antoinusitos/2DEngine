@@ -159,6 +159,7 @@ void Player::Initialize()
 	isInMenu = false;
 	indexMenu = 0;
 	wantsTheMenu = false;
+
 }
 
 void Player::SetLife(int theLife)
@@ -395,9 +396,9 @@ void Player::Update(Input * input, sf::Time time)
 
 		if (input->getButton().action == true && pickUpTime/1000.0f >= 0.5f)
 		{
-			TakePower();
-
 			pickUpTime = 0.0f;
+			input->setButton(Input::action, false);
+			TakePower();
 		}
 
 		if (state == Data::Instance()->LADDER)
