@@ -46,8 +46,11 @@ void Bomb::Draw(sf::RenderWindow & window)
 
 void Bomb::Update(Input * input, Time time)
 {
-	currentTime += time.asSeconds();
-
+	currentTime += time.asMilliseconds();
+	if (currentTime / 1000 >= timeToExplode)
+	{
+		PlayExplosion();
+	}
 }
 
 void Bomb::UpdateY(int value)
