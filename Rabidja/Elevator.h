@@ -18,6 +18,8 @@ public:
 	void SetPlayer(Player* thePl);
 	Player* GetPlayer();
 
+	void Invert();
+
 private:
 
 	int xSprite;

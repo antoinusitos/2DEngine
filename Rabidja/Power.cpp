@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Blocker.h"
 #include "EndingPlateform.h"
+#include "Elevator.h"
 
 Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap, int theTypeExecution)
 {
@@ -27,8 +28,12 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 	{
 		theTileType = 13;
 	}
+	else if (currentType == type::blue)
+	{
+		theTileType = 21;
+	}
 
-	if (!texture.loadFromFile("graphics/level1TileSheet2.png"))
+	if (!texture.loadFromFile("graphics/level1TileSheet2test.png"))
 	{
 		// Error
 		cout << "Error while loading the texture of the player." << endl;
@@ -173,6 +178,28 @@ void Power::Activate()
 		map->GetTile(55)->Hide();
 		map->GetTile(65)->Hide();
 	}
+	else if (typeExecution == 3)
+	{
+		map->GetElevator()->Invert();
+	}
+	else if (typeExecution == 4)
+	{
+		vector<Tile*> t = map->GetTiles(23);
+		for (int i = 0; i < t.size(); i++)
+		{
+			t.at(i)->Hide();
+		}
+		vector<Tile*> t2 = map->GetTiles(24);
+		for (int i = 0; i < t2.size(); i++)
+		{
+			t2.at(i)->Hide();
+		}
+		vector<Tile*> t3 = map->GetTiles(25);
+		for (int i = 0; i < t3.size(); i++)
+		{
+			t3.at(i)->Hide();
+		}
+	}
 
 
 	/*if (currentType == type::green)
@@ -194,7 +221,47 @@ void Power::Activate()
 
 void Power::Desactivate()
 {
-	if (currentType == type::green)
+
+	if (typeExecution == 0)
+	{
+		map->GetEnding()->SetMove(false);
+		map->GetEnding()->SetRetour(true);
+	}
+	else if (typeExecution == 1)
+	{
+		map->GetBlockers().at(0)->Rotate(true);
+		map->SetCanFinish(true);
+	}
+	else if (typeExecution == 2)
+	{
+		map->GetTile(45)->Show();
+		map->GetTile(55)->Show();
+		map->GetTile(65)->Show();
+	}
+	else if (typeExecution == 3)
+	{
+		//map->GetElevator()->Invert();
+	}
+	else if (typeExecution == 4)
+	{
+		vector<Tile*> t = map->GetTiles(23);
+		for (int i = 0; i < t.size(); i++)
+		{
+			t.at(i)->Show();
+		}
+		vector<Tile*> t2 = map->GetTiles(24);
+		for (int i = 0; i < t2.size(); i++)
+		{
+			t2.at(i)->Show();
+		}
+		vector<Tile*> t3 = map->GetTiles(25);
+		for (int i = 0; i < t3.size(); i++)
+		{
+			t3.at(i)->Show();
+		}
+	}
+
+	/*if (currentType == type::green)
 	{
 		map->GetEnding()->SetMove(false);
 		map->GetEnding()->SetRetour(true);
@@ -209,7 +276,7 @@ void Power::Desactivate()
 		map->GetTile(45)->Show();
 		map->GetTile(55)->Show();
 		map->GetTile(65)->Show();
-	}
+	}*/
 }
 
 void Power::PlayPut()

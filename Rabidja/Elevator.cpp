@@ -40,7 +40,7 @@ void Elevator::Update(Input * input, Time time)
 {
 	if (up)
 	{
-		y -= 1;
+		y -= speed;
 		if (y <= limitY)
 		{
 			y = limitY;
@@ -53,7 +53,7 @@ void Elevator::Update(Input * input, Time time)
 	}
 	else
 	{
-		y += 1;
+		y += speed;
 		if (y >= yPos)
 		{
 			y = yPos;
@@ -74,4 +74,9 @@ void Elevator::SetPlayer(Player * thePl)
 Player* Elevator::GetPlayer()
 {
 	return thePlayer;
+}
+
+void Elevator::Invert()
+{
+	up = !up;
 }

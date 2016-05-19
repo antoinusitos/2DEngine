@@ -24,6 +24,16 @@ Bomb::Bomb(string tileName, int theX, int theY)
 		soundExplosion.setBuffer(bufferExplosion);
 	}
 
+	if (!bufferBip.loadFromFile("sound/bip.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound bip of the bomb." << endl;
+	}
+	else
+	{
+		soundBip.setBuffer(bufferBip);
+	}
+
 	width = 32;
 	height = 32;
 	x = theX * width;
@@ -31,9 +41,11 @@ Bomb::Bomb(string tileName, int theX, int theY)
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
 	currentTime = 0;
-	timeToExplode = 40.0f;
+	timeToExplode = 70.0f;
 	activated = false;
 	exploded = false;
+	timeToBip = 1.0f;
+	currentTimeToBip = 0.0f;
 }
 
 Bomb::~Bomb()
@@ -48,6 +60,31 @@ void Bomb::Draw(sf::RenderWindow & window)
 
 void Bomb::Update(Input * input, Time time)
 {
+
+	currentTimeToBip += time.asMilliseconds();
+	if (currentTimeToBip / 1000 >= timeToBip)
+	{
+		currentTimeToBip = 0.0f;
+		soundBip.play();
+	}
+
+	if (currentTime / 1000 >= timeToExplode * 0.9f)
+	{
+		timeToBip = 0.1f;
+	}
+	else if (currentTime / 1000 >= timeToExplode * 0.7f)
+	{
+		timeToBip = 0.3f;
+	}
+	else if (currentTime / 1000 >= timeToExplode * 0.5f)
+	{
+		timeToBip = 0.5f;
+	}
+	else if (currentTime / 1000 >= timeToExplode * 0.3f)
+	{
+		timeToBip = 0.75f;
+	}
+
 	if (debug)
 	{
 		Debug::Instance()->AddDebug("Bomb : " + to_string(currentTime / 1000), false, 15, Color::Red);
@@ -74,4 +111,9 @@ void Bomb::PlayExplosion()
 void Bomb::Activate()
 {
 	activated = true;
+}
+
+bool Bomb::GetExploded()
+{
+	return exploded;
 }

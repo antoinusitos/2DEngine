@@ -18,6 +18,8 @@ public:
 
 	void Activate();
 
+	bool GetExploded();
+
 private:
 	int xSprite;
 	int ySprite;
@@ -25,8 +27,14 @@ private:
 	sf::SoundBuffer bufferExplosion;
 	sf::Sound soundExplosion;
 
+	sf::SoundBuffer bufferBip;
+	sf::Sound soundBip;
+
 	float timeToExplode;
 	float currentTime;
+
+	float timeToBip;
+	float currentTimeToBip;
 
 	bool activated;
 	bool exploded;

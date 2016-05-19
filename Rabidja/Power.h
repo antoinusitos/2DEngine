@@ -14,6 +14,7 @@ public:
 		yellow,
 		red,
 		green,
+		blue,
 	};
 
 	Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap, int theTypeExecution);

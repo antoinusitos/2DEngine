@@ -75,6 +75,11 @@ void EndingPlateform::Update(Input * input, Time time)
 			retour = false;
 		}
 	}
+	if (theBomb->GetExploded())
+	{
+		sleep(Time(milliseconds(1500)));
+		theMap->SetGameOver(true);
+	}
 }
 
 void EndingPlateform::SetMove(bool state)

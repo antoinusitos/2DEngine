@@ -220,17 +220,17 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 11)
 				{
-					powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
+					powers.push_back(new Power(Power::type::green, 10.0f, j, i, this, 0));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 12)
 				{
-					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
+					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this, 1));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 13)
 				{
-					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
+					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this, 2));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58 || lignes[i][j] == 84 || lignes[i][j] == 85
@@ -263,6 +263,7 @@ void Map::GenerateTerrainWithFile(int nb)
 			}
 			else if (nb == 4)
 			{
+				SetCanFinish(true);
 				bool canDraw = true;
 				if (lignes[i][j] == 19)
 				{
@@ -271,17 +272,22 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 11)
 				{
-					powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
+					powers.push_back(new Power(Power::type::green, 20.0f, j, i, this, 2));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 12)
 				{
-					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
+					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this, 0));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 13)
 				{
-					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
+					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this, 3));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 21)
+				{
+					powers.push_back(new Power(Power::type::blue, 10.0f, j, i, this, 4));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58 || lignes[i][j] == 84 || lignes[i][j] == 85
@@ -337,6 +343,26 @@ Tile* Map::GetTile(int tileNumber)
 	return nullptr;
 }
 
+vector< Tile* > Map::GetTiles(int tileNumber)
+{
+	int x = Data::Instance()->TILE_X;
+	int y = Data::Instance()->TILE_Y;
+
+	vector< Tile* > foo;
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			if (tile[j][i] != nullptr && tile[j][i]->GetTileType() == tileNumber)
+			{
+				foo.push_back(tile[j][i]);
+			}
+		}
+	}
+	return foo;
+}
+
 void Map::LoadLevel(int nb)
 {
 	string name = "map/map" + to_string(nb) + ".txt";
@@ -389,7 +415,7 @@ void Map::LoadLevel(int nb)
 	}
 	file.close();
 
-	GenerateTerrainWithFile();
+	GenerateTerrainWithFile(nb);
 }
 
 int Map::GetStartX()

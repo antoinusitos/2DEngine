@@ -48,6 +48,7 @@ public:
 
 	Tile* GetTile(int x, int y);
 	Tile* GetTile(int tileNumber);
+	vector< Tile* > GetTiles(int tileNumber);
 
 	void LoadLevel(int nb);
 
