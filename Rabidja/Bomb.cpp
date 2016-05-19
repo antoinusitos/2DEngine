@@ -1,6 +1,6 @@
 #include "Bomb.h"
 
-Bomb::Bomb(string tileName, int theX, int theY)
+Bomb::Bomb(string tileName, int theX, int theY, float theTimeToExplode)
 {
 	if (!texture.loadFromFile("graphics/" + tileName + ".png"))
 	{
@@ -41,7 +41,7 @@ Bomb::Bomb(string tileName, int theX, int theY)
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
 	currentTime = 0;
-	timeToExplode = 70.0f;
+	timeToExplode = theTimeToExplode;
 	activated = false;
 	exploded = false;
 	timeToBip = 1.0f;

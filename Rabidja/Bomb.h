@@ -6,7 +6,7 @@
 class Bomb : public Entity
 {
 public:
-	Bomb(string tileName, int theX, int theY);
+	Bomb(string tileName, int theX, int theY, float theTimeToExplode);
 	~Bomb();
 
 	void Draw(sf::RenderWindow &window) override;

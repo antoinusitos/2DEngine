@@ -138,6 +138,9 @@ int main(int argc, char *argv[])
 	timeRemaining = timeClignotement;
 	visible = true;
 
+	bool begin = true;
+	float currentTimeSplah = 0.0f;
+
 	// Gameplay loop
 	while (window.isOpen())
 	{
@@ -145,122 +148,147 @@ int main(int argc, char *argv[])
 
 		if (inMenu)
 		{
+
 			window.clear();
 
-			lvl1.setCharacterSize(20);
-
-			lvl1.setStyle(sf::Text::Bold);
-
-			lvl1.setString("PRESS START");
-
-			sprite.setTextureRect(sf::IntRect(0, 0, Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT));
-
-			window.draw(sprite);
-
-			lvl1.setPosition(Vector2f(midWidth, midHeight*1.2f));
-
-			window.draw(lvl1);
-
-			if (monteBG)
+			if (begin)
 			{
-				offsetBG += smoothDeplacement;
-				if (offsetBG >= limit)
+
+				RectangleShape rectangle(sf::Vector2f(120, 50));
+
+				rectangle.setSize(sf::Vector2f(100, 100));
+				rectangle.setFillColor(sf::Color(100, 250, 50));
+
+				window.draw(rectangle);
+
+				currentTimeSplah += theClock.restart().asMilliseconds();
+				if (currentTimeSplah/1000 >= 7.0f)
 				{
-					monteBG = false;
+
+					begin = false;
+
+					rectangle.setSize(sf::Vector2f(0, 0));
+					window.draw(rectangle);
 				}
 			}
 			else
 			{
-				offsetBG -= smoothDeplacement;
-				if (offsetBG <= -limit)
-				{
-					monteBG = true;
-				}
-			}
 
-			if (monteBD)
-			{
-				offsetBD += smoothDeplacement;
-				if (offsetBD >= limit)
-				{
-					monteBD = false;
-				}
-			}
-			else
-			{
-				offsetBD -= smoothDeplacement;
-				if (offsetBD <= -limit)
-				{
-					monteBD = true;
-				}
-			}
+				lvl1.setCharacterSize(20);
 
-			if (monteBJ)
-			{
-				offsetBJ += smoothDeplacement;
-				if (offsetBJ >= limit)
-				{
-					monteBJ = false;
-				}
-			}
-			else
-			{
-				offsetBJ -= smoothDeplacement;
-				if (offsetBJ <= -limit)
-				{
-					monteBJ = true;
-				}
-			}
+				lvl1.setStyle(sf::Text::Bold);
 
-			if (monteBA)
-			{
-				offsetBA += smoothDeplacement;
-				if (offsetBA >= limit)
-				{
-					monteBA = false;
-				}
-			}
-			else
-			{
-				offsetBA -= smoothDeplacement;
-				if (offsetBA <= -limit)
-				{
-					monteBA = true;
-				}
-			}
+				lvl1.setString("PRESS START");
 
-			if (monteBS)
-			{
-				offsetBS += smoothDeplacement;
-				if (offsetBS >= limit)
-				{
-					monteBS = false;
-				}
-			}
-			else
-			{
-				offsetBS -= smoothDeplacement;
-				if (offsetBS <= -limit)
-				{
-					monteBS = true;
-				}
-			}
+				sprite.setTextureRect(sf::IntRect(0, 0, Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT));
 
-			spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight / 1.5f) + offsetBG));
-			spriteBoutonDroite.setPosition(Vector2f((midWidth / 2) + 50, (midHeight / 1.5f) + offsetBD));
-			spriteBoutonSaut.setPosition(Vector2f((midWidth / 2) + 100, (midHeight / 1.5f) + offsetBJ));
-			spriteBoutonAction.setPosition(Vector2f((midWidth / 2) + 150, (midHeight / 1.5f) + offsetBA));
-			spriteBoutonStart.setPosition(Vector2f((midWidth / 2) + 200, (midHeight / 1.5f) + offsetBS));
+				window.draw(sprite);
 
-			window.draw(spriteBoutonGauche);
-			window.draw(spriteBoutonDroite);
-			window.draw(spriteBoutonSaut);
-			window.draw(spriteBoutonAction);
-			window.draw(spriteBoutonStart);
+				lvl1.setPosition(Vector2f(midWidth, midHeight*1.2f));
+
+				window.draw(lvl1);
+
+				if (monteBG)
+				{
+					offsetBG += smoothDeplacement;
+					if (offsetBG >= limit)
+					{
+						monteBG = false;
+					}
+				}
+				else
+				{
+					offsetBG -= smoothDeplacement;
+					if (offsetBG <= -limit)
+					{
+						monteBG = true;
+					}
+				}
+
+				if (monteBD)
+				{
+					offsetBD += smoothDeplacement;
+					if (offsetBD >= limit)
+					{
+						monteBD = false;
+					}
+				}
+				else
+				{
+					offsetBD -= smoothDeplacement;
+					if (offsetBD <= -limit)
+					{
+						monteBD = true;
+					}
+				}
+
+				if (monteBJ)
+				{
+					offsetBJ += smoothDeplacement;
+					if (offsetBJ >= limit)
+					{
+						monteBJ = false;
+					}
+				}
+				else
+				{
+					offsetBJ -= smoothDeplacement;
+					if (offsetBJ <= -limit)
+					{
+						monteBJ = true;
+					}
+				}
+
+				if (monteBA)
+				{
+					offsetBA += smoothDeplacement;
+					if (offsetBA >= limit)
+					{
+						monteBA = false;
+					}
+				}
+				else
+				{
+					offsetBA -= smoothDeplacement;
+					if (offsetBA <= -limit)
+					{
+						monteBA = true;
+					}
+				}
+
+				if (monteBS)
+				{
+					offsetBS += smoothDeplacement;
+					if (offsetBS >= limit)
+					{
+						monteBS = false;
+					}
+				}
+				else
+				{
+					offsetBS -= smoothDeplacement;
+					if (offsetBS <= -limit)
+					{
+						monteBS = true;
+					}
+				}
+
+				spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight / 1.5f) + offsetBG));
+				spriteBoutonDroite.setPosition(Vector2f((midWidth / 2) + 50, (midHeight / 1.5f) + offsetBD));
+				spriteBoutonSaut.setPosition(Vector2f((midWidth / 2) + 100, (midHeight / 1.5f) + offsetBJ));
+				spriteBoutonAction.setPosition(Vector2f((midWidth / 2) + 150, (midHeight / 1.5f) + offsetBA));
+				spriteBoutonStart.setPosition(Vector2f((midWidth / 2) + 200, (midHeight / 1.5f) + offsetBS));
+
+				window.draw(spriteBoutonGauche);
+				window.draw(spriteBoutonDroite);
+				window.draw(spriteBoutonSaut);
+				window.draw(spriteBoutonAction);
+				window.draw(spriteBoutonStart);
+			}
 
 			window.display();
 			
-			if (input->getButton().start == true)
+			if (input->getButton().start == true && begin == false)
 			{
 				if (indexMenu == 0)
 				{

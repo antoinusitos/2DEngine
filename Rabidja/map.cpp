@@ -255,7 +255,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i);
+					theBomb = new Bomb("level1TileSheet2", j, i, 40.0f);
 					canDraw = false;
 				}
 				if (canDraw)
@@ -312,7 +312,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i);
+					theBomb = new Bomb("level1TileSheet2", j, i, 70.0f);
 					canDraw = false;
 				}
 				if (canDraw)
