@@ -10,7 +10,7 @@ public:
 	~Tile();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, sf::Time time) override;
 
 	int GetType();
 	int GetTileType();

@@ -71,6 +71,7 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 	isAttached = true;
 	canbePicked = true;
 	map = theMap;
+	pickUpTime = 0.0f;
 }
 
 Power::~Power()
@@ -88,16 +89,17 @@ void Power::Draw(RenderWindow &window)
 		Debug::Instance()->AddDebug("isAttached:" + to_string(isAttached), false, 15, Color::Blue);
 		Debug::Instance()->AddDebug("x:" + to_string(x), false, 15, Color::Blue);
 		Debug::Instance()->AddDebug("y:" + to_string(y), false, 15, Color::Blue);
-		Debug::Instance()->AddDebug("time:" + to_string(time(0) - pickUpTime), false, 15, Color::Blue);
+		Debug::Instance()->AddDebug("time:" + to_string(pickUpTime/1000.0f), false, 15, Color::Blue);
 		Debug::Instance()->AddDebug("timeToRespawn:" + to_string(timeToRespawn), false, 15, Color::Blue);
 	}
 }
 
-void Power::Update(Input * input)
+void Power::Update(Input * input, sf::Time time)
 {
 	if (!isAttached)
 	{
-		if (time(0) - pickUpTime >= timeToRespawn)
+		pickUpTime += time.asMilliseconds();
+		if (pickUpTime / 1000 >= timeToRespawn)
 		{
 			Reset();
 			map->ResetRunningPower();
@@ -109,7 +111,7 @@ void Power::Take()
 {
 	if (isAttached)
 	{
-		pickUpTime = time(0);
+		pickUpTime = 0.0f;
 		isAttached = false;
 	}
 }
@@ -146,7 +148,7 @@ void Power::Reset()
 	x = posX;
 	y = posY;
 	isAttached = true;
-	pickUpTime = time(0);
+	pickUpTime = 0.0f;
 	Desactivate();
 	soundReturn.play();
 }

@@ -20,7 +20,7 @@ public:
 	~Power();
 
 	void Draw(sf::RenderWindow &window) override;
-	void Update(Input* input) override;
+	void Update(Input* input, sf::Time time) override;
 
 	void Take();
 	void Release();
@@ -42,7 +42,7 @@ private:
 
 	float timeToRespawn;
 	float currentTime;
-	time_t pickUpTime;
+	float pickUpTime;
 
 	type currentType;
 	

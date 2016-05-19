@@ -35,11 +35,11 @@ public:
 	void DrawElevators(sf::RenderWindow &window);
 	void DrawEnding(sf::RenderWindow &window);
 	void DrawBomb(sf::RenderWindow &window);
-	void UpdatePowers();
-	void UpdateBlockers();
-	void UpdateElevators();
-	void UpdateEnding();
-	void UpdateBomb();
+	void UpdatePowers(sf::Time time);
+	void UpdateBlockers(sf::Time time);
+	void UpdateElevators(sf::Time time);
+	void UpdateEnding(sf::Time time);
+	void UpdateBomb(sf::Time time);
 
 	void AddTile(string name, int posX, int posY, int type);
 

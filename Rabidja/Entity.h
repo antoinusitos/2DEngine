@@ -29,7 +29,7 @@ public:
 	int GetWidth();
 
 	virtual void Draw(sf::RenderWindow &window) = 0;
-	virtual void Update(Input* input = nullptr) = 0;
+	virtual void Update(Input* input = nullptr, Time time = Time::Zero) = 0;
 
 protected:
 	int x;

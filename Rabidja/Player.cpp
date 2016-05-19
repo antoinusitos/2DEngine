@@ -150,7 +150,8 @@ void Player::Initialize()
 	hasJump = false;
 	canJump = false;
 	takenPower = nullptr;
-	pickUpTime = time(0);
+	pickUpTime = 0.0f;
+	currentTime = 0.0f;
 	timeInAir = 0;
 	timeInAirToDeath = 15;
 
@@ -158,6 +159,7 @@ void Player::Initialize()
 	isInMenu = false;
 	indexMenu = 0;
 	wantsTheMenu = false;
+
 }
 
 void Player::SetLife(int theLife)
@@ -257,7 +259,7 @@ void Player::Draw(RenderWindow &window)
 		Debug::Instance()->AddDebug("hasJump: " + to_string(hasJump), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("dirY: " + to_string(dirY), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("state: " + to_string(state), true, 15, Color::Red);
-		Debug::Instance()->AddDebug("PickUpTime: " + to_string(time(0) - pickUpTime), true, 15, Color::Red);
+		Debug::Instance()->AddDebug("PickUpTime: " + to_string(pickUpTime / 1000.0f), true, 15, Color::Red);
 		Debug::Instance()->AddDebug("Power Attached: " + to_string(takenPower != nullptr ? true : false), true, 15, Color::Red);
 	}
 
@@ -288,8 +290,10 @@ void Player::Draw(RenderWindow &window)
 	}
 }
 
-void Player::Update(Input * input)
+void Player::Update(Input * input, sf::Time time)
 {
+	pickUpTime += time.asMilliseconds();
+
 	if (debug)
 	{
 		string s;
@@ -336,6 +340,7 @@ void Player::Update(Input * input)
 					frameNumber = 0;
 					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 					frameMax = 2;
+					animSlower = 1;
 				}
 			}
 		}
@@ -350,7 +355,6 @@ void Player::Update(Input * input)
 			}
 			else
 			{
-
 				//On augmente les coordonnées en x du joueur
 				dirX += speed;
 
@@ -367,6 +371,7 @@ void Player::Update(Input * input)
 					frameNumber = 0;
 					frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 					frameMax = 2;
+					animSlower = 1;
 				}
 			}
 		}
@@ -374,6 +379,7 @@ void Player::Update(Input * input)
 		//Si on n'appuie sur rien et qu'on est sur le sol, on charge l'animation marquant l'inactivité (Idle)
 		else if (input->getButton().right == false && input->getButton().left == false && isGrounding == true && state != Data::Instance()->LADDER)
 		{
+
 			//On teste si le joueur n'était pas déjà inactif, pour ne pas recharger l'animation
 			//à chaque tour de boucle
 			if (state != Data::Instance()->IDLE)
@@ -383,15 +389,16 @@ void Player::Update(Input * input)
 				frameNumber = 0;
 				frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 				frameMax = 2;
+				animSlower = 2;
 			}
 
 		}
 
-		if (input->getButton().action == true && time(0) - pickUpTime >= 0.5f)
+		if (input->getButton().action == true && pickUpTime/1000.0f >= 0.5f)
 		{
+			pickUpTime = 0.0f;
+			input->setButton(Input::action, false);
 			TakePower();
-
-			pickUpTime = time(0);
 		}
 
 		if (state == Data::Instance()->LADDER)

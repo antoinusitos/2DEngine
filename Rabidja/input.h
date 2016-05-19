@@ -22,6 +22,17 @@ public:
 	void gestionInputs(sf::RenderWindow &window);
 	void getInput(sf::RenderWindow &window);
 
+	const enum
+	{
+		up,
+		down,
+		right,
+		left,
+		action,
+		jump,
+		start,
+		restart
+	};
 
 private:
 
@@ -30,17 +41,7 @@ private:
 	Data::Button button;
 
 	//Enum pour les boutons
-	const enum
-	{
-		up,
-		down, 
-		right, 
-		left, 
-		action, 
-		jump, 
-		start,
-		restart
-	};
+	
 
 };
 #endif

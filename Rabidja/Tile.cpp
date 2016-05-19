@@ -63,7 +63,7 @@ void Tile::Draw(RenderWindow &window)
 		window.draw(sprite);
 }
 
-void Tile::Update(Input * input)
+void Tile::Update(Input * input, sf::Time time)
 {
 }
 
