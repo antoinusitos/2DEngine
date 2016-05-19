@@ -308,6 +308,8 @@ int main(int argc, char *argv[])
 			else
 			{
 
+				theMap->Start();
+
 				Time time = theClock.restart();
 
 				player->Update(input, time);

@@ -69,6 +69,7 @@ Map::Map()
 	playerStartY = 0;
 	canFinish = false;
 	gameOver = false;
+	started = false;
 }
 
 Map::~Map()
@@ -406,4 +407,18 @@ bool Map::GetGameOver()
 void Map::SetGameOver(bool state)
 {
 	gameOver = state;
+}
+
+Bomb* Map::GetBomb()
+{
+	return theBomb;
+}
+
+void Map::Start()
+{
+	if (!started)
+	{
+		started = true;
+		theBomb->Activate();
+	}
 }

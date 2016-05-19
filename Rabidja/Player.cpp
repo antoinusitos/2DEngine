@@ -296,8 +296,6 @@ void Player::Update(Input * input, sf::Time time)
 
 	if (debug)
 	{
-		string s;
-
 		Debug::Instance()->AddDebug("Touche E:" + to_string(input->getButton().action), false, 15, Color::Red);
 	}
 

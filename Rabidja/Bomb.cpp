@@ -31,7 +31,9 @@ Bomb::Bomb(string tileName, int theX, int theY)
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	sprite.setTextureRect(sf::IntRect(xSprite * width, ySprite * height, width, height));
 	currentTime = 0;
-	timeToExplode = 10.0f;
+	timeToExplode = 40.0f;
+	activated = false;
+	exploded = false;
 }
 
 Bomb::~Bomb()
@@ -46,10 +48,16 @@ void Bomb::Draw(sf::RenderWindow & window)
 
 void Bomb::Update(Input * input, Time time)
 {
-	currentTime += time.asMilliseconds();
-	if (currentTime / 1000 >= timeToExplode)
+	if (debug)
+	{
+		Debug::Instance()->AddDebug("Bomb : " + to_string(currentTime / 1000), false, 15, Color::Red);
+	}
+	if(activated)
+		currentTime += time.asMilliseconds();
+	if (currentTime / 1000 >= timeToExplode && exploded == false)
 	{
 		PlayExplosion();
+		exploded = true;
 	}
 }
 
@@ -61,4 +69,9 @@ void Bomb::UpdateY(int value)
 void Bomb::PlayExplosion()
 {
 	soundExplosion.play();
+}
+
+void Bomb::Activate()
+{
+	activated = true;
 }

@@ -16,6 +16,8 @@ public:
 
 	void PlayExplosion();
 
+	void Activate();
+
 private:
 	int xSprite;
 	int ySprite;
@@ -25,6 +27,9 @@ private:
 
 	float timeToExplode;
 	float currentTime;
+
+	bool activated;
+	bool exploded;
 };
 
 #endif

@@ -73,6 +73,10 @@ public:
 	bool GetGameOver();
 	void SetGameOver(bool state);
 
+	Bomb* GetBomb();
+
+	void Start();
+
 private:
 	//Variables de la classe en accès privé
 
@@ -117,5 +121,7 @@ private:
 	sf::Sound soundMusic;
 
 	bool gameOver;
+
+	bool started;
 };
 #endif
