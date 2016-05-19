@@ -35,6 +35,7 @@ private:
 
 	float timeToBip;
 	float currentTimeToBip;
+	float debutTime;
 
 	bool activated;
 	bool exploded;

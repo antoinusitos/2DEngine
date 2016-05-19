@@ -60,7 +60,6 @@ void Bomb::Draw(sf::RenderWindow & window)
 
 void Bomb::Update(Input * input, Time time)
 {
-
 	currentTimeToBip += time.asMilliseconds();
 	if (currentTimeToBip / 1000 >= timeToBip)
 	{
@@ -111,6 +110,8 @@ void Bomb::PlayExplosion()
 void Bomb::Activate()
 {
 	activated = true;
+	Time time;
+	debutTime = time.asMilliseconds();
 }
 
 bool Bomb::GetExploded()
