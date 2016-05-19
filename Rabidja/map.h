@@ -44,7 +44,7 @@ public:
 	void AddTile(string name, int posX, int posY, int type);
 
 	void GenerateTerrain();
-	void GenerateTerrainWithFile();
+	void GenerateTerrainWithFile(int nb);
 
 	Tile* GetTile(int x, int y);
 	Tile* GetTile(int tileNumber);

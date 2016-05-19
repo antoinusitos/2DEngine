@@ -70,6 +70,21 @@ Map::Map()
 	canFinish = false;
 	gameOver = false;
 	started = false;
+
+	/*struct Functor
+	{
+		// Normal class/struct members
+
+		int operator()(double d) // Arbitrary return types and parameter list
+		{
+			return d + 1;
+		}
+	};
+
+	// Use:
+	Functor f;
+	float i = f(3.14);
+	cout << i << endl;*/
 }
 
 Map::~Map()
@@ -186,7 +201,7 @@ void Map::GenerateTerrain()
 	AddTile("groundRight", 15, 7, 2);
 }
 
-void Map::GenerateTerrainWithFile()
+void Map::GenerateTerrainWithFile(int nb)
 {
 	int x = Data::Instance()->TILE_X;
 	int y = Data::Instance()->TILE_Y;
@@ -195,54 +210,108 @@ void Map::GenerateTerrainWithFile()
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			bool canDraw = true;
-			if (lignes[i][j] == 19)
+			if (nb == 3)
 			{
-				playerStartX = j;
-				playerStartY = i;
+				bool canDraw = true;
+				if (lignes[i][j] == 19)
+				{
+					playerStartX = j;
+					playerStartY = i;
+				}
+				else if (lignes[i][j] == 11)
+				{
+					powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 12)
+				{
+					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 13)
+				{
+					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58 || lignes[i][j] == 84 || lignes[i][j] == 85
+					|| lignes[i][j] == 85)
+				{
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 59)
+				{
+					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 83)
+				{
+					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 80)
+				{
+					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 05)
+				{
+					theBomb = new Bomb("level1TileSheet2", j, i);
+					canDraw = false;
+				}
+				if (canDraw)
+					AddTile("level1TileSheet2", j, i, lignes[i][j]);
 			}
-			else if (lignes[i][j] == 11)
+			else if (nb == 4)
 			{
-				powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
-				canDraw = false;
+				bool canDraw = true;
+				if (lignes[i][j] == 19)
+				{
+					playerStartX = j;
+					playerStartY = i;
+				}
+				else if (lignes[i][j] == 11)
+				{
+					powers.push_back(new Power(Power::type::green, 10.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 12)
+				{
+					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 13)
+				{
+					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58 || lignes[i][j] == 84 || lignes[i][j] == 85
+					|| lignes[i][j] == 85)
+				{
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 59)
+				{
+					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 83)
+				{
+					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 80)
+				{
+					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 05)
+				{
+					theBomb = new Bomb("level1TileSheet2", j, i);
+					canDraw = false;
+				}
+				if (canDraw)
+					AddTile("level1TileSheet2test", j, i, lignes[i][j]);
 			}
-			else if (lignes[i][j] == 12)
-			{
-				powers.push_back(new Power(Power::type::red, 20.0f, j, i, this));
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 13)
-			{
-				powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this));
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58|| lignes[i][j] == 84 || lignes[i][j] == 85
-				 || lignes[i][j] == 85)
-			{
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 59)
-			{
-				blockers.push_back(new Blocker("level1TileSheet2", j, i));
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 83)
-			{
-				theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 80)
-			{
-				theElevator = new Elevator("level1TileSheet2", j, i, this);
-				canDraw = false;
-			}
-			else if (lignes[i][j] == 05)
-			{
-				theBomb = new Bomb("level1TileSheet2", j, i);
-				canDraw = false;
-			}
-			if(canDraw)
-				AddTile("level1TileSheet2", j, i, lignes[i][j]);
 		}
 	}
 }

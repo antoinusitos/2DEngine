@@ -1,6 +1,6 @@
 #include "Blocker.h"
 
-Blocker::Blocker(string tileName, int theX, int theY )
+Blocker::Blocker(string tileName, int theX, int theY)
 {
 	if (!texture.loadFromFile("graphics/" + tileName + ".png"))
 	{

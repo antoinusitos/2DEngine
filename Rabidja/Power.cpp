@@ -7,7 +7,7 @@
 #include "Blocker.h"
 #include "EndingPlateform.h"
 
-Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap)
+Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap, int theTypeExecution)
 {
 	width = Data::Instance()->TILE_SIZE;
 	height = Data::Instance()->TILE_SIZE;
@@ -72,6 +72,7 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 	canbePicked = true;
 	map = theMap;
 	pickUpTime = 0.0f;
+	typeExecution = theTypeExecution;
 }
 
 Power::~Power()
@@ -156,7 +157,25 @@ void Power::Reset()
 void Power::Activate()
 {
 	PlayPut();
-	if (currentType == type::green)
+
+	if (typeExecution == 0)
+	{
+		map->GetEnding()->SetMove(true);
+	}
+	else if (typeExecution == 1)
+	{
+		map->GetBlockers().at(0)->Rotate(true);
+		map->SetCanFinish(true);
+	}
+	else if (typeExecution == 2)
+	{
+		map->GetTile(45)->Hide();
+		map->GetTile(55)->Hide();
+		map->GetTile(65)->Hide();
+	}
+
+
+	/*if (currentType == type::green)
 	{
 		map->GetEnding()->SetMove(true);
 	}
@@ -170,7 +189,7 @@ void Power::Activate()
 		map->GetTile(45)->Hide();
 		map->GetTile(55)->Hide();
 		map->GetTile(65)->Hide();
-	}
+	}*/
 }
 
 void Power::Desactivate()

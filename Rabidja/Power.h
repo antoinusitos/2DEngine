@@ -16,7 +16,7 @@ public:
 		green,
 	};
 
-	Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap);
+	Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap, int theTypeExecution);
 	~Power();
 
 	void Draw(sf::RenderWindow &window) override;
@@ -65,6 +65,8 @@ private:
 
 	sf::SoundBuffer bufferReturn;
 	sf::Sound soundReturn;
+
+	int typeExecution;
 };
 
 #endif
