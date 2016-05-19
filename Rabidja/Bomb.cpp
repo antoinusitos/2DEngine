@@ -60,6 +60,12 @@ void Bomb::Draw(sf::RenderWindow & window)
 
 void Bomb::Update(Input * input, Time time)
 {
+
+	if (activated)
+		currentTime += time.asMilliseconds();
+
+	float temps = (currentTime / 1000) - (debutTime / 1000);
+
 	currentTimeToBip += time.asMilliseconds();
 	if (currentTimeToBip / 1000 >= timeToBip)
 	{
@@ -67,30 +73,28 @@ void Bomb::Update(Input * input, Time time)
 		soundBip.play();
 	}
 
-	if (currentTime / 1000 >= timeToExplode * 0.9f)
+	if (temps >= timeToExplode * 0.9f)
 	{
 		timeToBip = 0.1f;
 	}
-	else if (currentTime / 1000 >= timeToExplode * 0.7f)
+	else if (temps >= timeToExplode * 0.7f)
 	{
 		timeToBip = 0.3f;
 	}
-	else if (currentTime / 1000 >= timeToExplode * 0.5f)
+	else if (temps >= timeToExplode * 0.5f)
 	{
 		timeToBip = 0.5f;
 	}
-	else if (currentTime / 1000 >= timeToExplode * 0.3f)
+	else if (temps >= timeToExplode * 0.3f)
 	{
 		timeToBip = 0.75f;
 	}
 
 	if (debug)
 	{
-		Debug::Instance()->AddDebug("Bomb : " + to_string(currentTime / 1000), false, 15, Color::Red);
+		Debug::Instance()->AddDebug("Bomb : " + to_string(temps), false, 15, Color::Red);
 	}
-	if(activated)
-		currentTime += time.asMilliseconds();
-	if (currentTime / 1000 >= timeToExplode && exploded == false)
+	if (temps >= timeToExplode && exploded == false)
 	{
 		PlayExplosion();
 		exploded = true;
@@ -107,11 +111,10 @@ void Bomb::PlayExplosion()
 	soundExplosion.play();
 }
 
-void Bomb::Activate()
+void Bomb::Activate(Time theTime)
 {
 	activated = true;
-	Time time;
-	debutTime = time.asMilliseconds();
+	debutTime = theTime.asMilliseconds();
 }
 
 bool Bomb::GetExploded()

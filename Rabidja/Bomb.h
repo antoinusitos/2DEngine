@@ -16,7 +16,7 @@ public:
 
 	void PlayExplosion();
 
-	void Activate();
+	void Activate(Time theTime);
 
 	bool GetExploded();
 

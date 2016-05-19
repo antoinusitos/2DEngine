@@ -509,11 +509,11 @@ Bomb* Map::GetBomb()
 	return theBomb;
 }
 
-void Map::Start()
+void Map::Start(Time time)
 {
 	if (!started)
 	{
 		started = true;
-		theBomb->Activate();
+		theBomb->Activate(time);
 	}
 }

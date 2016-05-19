@@ -76,7 +76,7 @@ public:
 
 	Bomb* GetBomb();
 
-	void Start();
+	void Start(sf::Time time);
 
 private:
 	//Variables de la classe en accès privé

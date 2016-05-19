@@ -308,7 +308,7 @@ int main(int argc, char *argv[])
 			else
 			{
 
-				theMap->Start();
+				theMap->Start(theClock.getElapsedTime());
 
 				Time time = theClock.restart();
 
