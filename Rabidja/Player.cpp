@@ -410,6 +410,7 @@ void Player::Update(Input * input, sf::Time time)
 		{
 			if (isGrounding == true && canJump)
 			{
+				frameMax = 0;
 				prevY = y;
 				soundJump.play();
 				dirY -= Data::Instance()->JUMP_HEIGHT;
