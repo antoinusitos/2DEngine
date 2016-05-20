@@ -5,6 +5,8 @@
 #include "EndingPlateform.h"
 #include "Elevator.h"
 #include "Bomb.h"
+#include "Panneau.h"
+#include "Door.h"
 
 #include <iostream>
 #include <fstream>
@@ -153,12 +155,30 @@ void Map::DrawElevators(sf::RenderWindow & window)
 
 void Map::DrawEnding(sf::RenderWindow & window)
 {
-	theEndingPlateform->Draw(window);
+	if (theEndingPlateform != nullptr)
+		theEndingPlateform->Draw(window);
 }
 
 void Map::DrawBomb(sf::RenderWindow & window)
 {
-	theBomb->Draw(window);
+	if (theBomb != nullptr)
+		theBomb->Draw(window);
+}
+
+void Map::DrawPanneaux(sf::RenderWindow &window)
+{
+	for (unsigned i = 0; i < panneaux.size(); i++)
+	{
+		panneaux.at(i)->Draw(window);
+	}
+}
+
+void Map::DrawDoors(sf::RenderWindow &window)
+{
+	for (unsigned i = 0; i < doors.size(); i++)
+	{
+		doors.at(i)->Draw(window);
+	}
 }
 
 void Map::UpdatePowers(sf::Time time)
@@ -185,12 +205,22 @@ void Map::UpdateElevators(sf::Time time)
 
 void Map::UpdateEnding(sf::Time time)
 {
-	theEndingPlateform->Update(nullptr, time);
+	if (theEndingPlateform != nullptr)
+		theEndingPlateform->Update(nullptr, time);
 }
 
 void Map::UpdateBomb(sf::Time time)
 {
-	theBomb->Update(nullptr, time);
+	if(theBomb != nullptr)
+		theBomb->Update(nullptr, time);
+}
+
+void Map::UpdatePanneaux(sf::Time time)
+{
+	for (unsigned i = 0; i < panneaux.size(); i++)
+	{
+		panneaux.at(i)->Update(nullptr, time);
+	}
 }
 
 void Map::AddTile(string name, int posX, int posY, int type)
@@ -232,7 +262,84 @@ void Map::GenerateTerrainWithFile(int nb)
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			if (nb == 2)
+			if (nb == 1)
+			{
+				SetCanFinish(true);
+				bool canDraw = true;
+				if (lignes[i][j] == 19)
+				{
+					playerStartX = j;
+					playerStartY = i;
+				}
+				else if (lignes[i][j] == 11)
+				{
+					powers.push_back(new Power(Power::type::green, 20.0f, j, i, this, 2));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 12)
+				{
+					powers.push_back(new Power(Power::type::red, 10.0f, j, i, this, 0));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 13)
+				{
+					powers.push_back(new Power(Power::type::yellow, 10.0f, j, i, this, 3));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 21)
+				{
+					powers.push_back(new Power(Power::type::blue, 10.0f, j, i, this, 4));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 56 || lignes[i][j] == 57 || lignes[i][j] == 58 || lignes[i][j] == 84 || lignes[i][j] == 85
+					|| lignes[i][j] == 85)
+				{
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 59)
+				{
+					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 60)
+				{
+					doors.push_back(new Door("level1TileSheet2test", j, i));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 83)
+				{
+					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 80)
+				{
+					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 90)
+				{
+					panneaux.push_back(new Panneau("level1TileSheet2test", j, i, 0));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 93)
+				{
+					panneaux.push_back(new Panneau("level1TileSheet2test", j, i, 1));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 96)
+				{
+					panneaux.push_back(new Panneau("level1TileSheet2test", j, i, 2));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 05)
+				{
+					theBomb = new Bomb("level1TileSheet2", j, i, 60.0f);
+					canDraw = false;
+				}
+				if (canDraw)
+					AddTile("level1TileSheet2test", j, i, lignes[i][j]);
+			}
+			else if (nb == 2)
 			{
 				bool canDraw = true;
 				if (lignes[i][j] == 19)
@@ -558,7 +665,8 @@ void Map::Start(Time time)
 	if (!started)
 	{
 		started = true;
-		theBomb->Activate(time);
+		if(theBomb != nullptr)
+			theBomb->Activate(time);
 	}
 }
 
@@ -595,4 +703,19 @@ void Map::ResetLevel()
 	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
 		delete *it2;
 	}
+}
+
+int Map::GetDoor(int theX, int theY)
+{
+	int retour = -1;
+
+	for (unsigned i = 0; i < doors.size(); i++)
+	{
+		if (doors.at(i)->GetX() == (theX * Data::Instance()->TILE_SIZE) && doors.at(i)->GetY() == (theY * Data::Instance()->TILE_SIZE))
+		{
+			retour = i;
+		}
+	}
+
+	return retour;
 }

@@ -160,6 +160,7 @@ void Player::Initialize()
 	indexMenu = 0;
 	wantsTheMenu = false;
 
+	mapNumber = -1;
 }
 
 void Player::ResetEntity()
@@ -403,6 +404,7 @@ void Player::Update(Input * input, sf::Time time)
 			pickUpTime = 0.0f;
 			input->setButton(Input::action, false);
 			TakePower();
+			ActivateLevel();
 		}
 
 		if (state == Data::Instance()->LADDER)
@@ -905,4 +907,24 @@ void Player::TakePower()
 bool Player::GetWantsTheMenu()
 {
 	return wantsTheMenu;
+}
+
+void Player::ActivateLevel()
+{
+	int retour = -1;
+
+	int xPos = x / 32;
+	int yPos = (int)floor(y / 32);
+
+	retour = theMap->GetDoor(xPos, yPos);
+
+	if (retour != -1)
+	{
+		mapNumber = retour;
+	}
+}
+
+int Player::MustLoadLevel()
+{
+	return mapNumber;
 }

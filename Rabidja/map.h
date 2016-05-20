@@ -17,6 +17,8 @@ class Blocker;
 class EndingPlateform;
 class Bomb;
 class Elevator;
+class Panneau;
+class Door;
 
 class Map
 {
@@ -35,11 +37,15 @@ public:
 	void DrawElevators(sf::RenderWindow &window);
 	void DrawEnding(sf::RenderWindow &window);
 	void DrawBomb(sf::RenderWindow &window);
+	void DrawPanneaux(sf::RenderWindow &window);
+	void DrawDoors(sf::RenderWindow &window);
 	void UpdatePowers(sf::Time time);
 	void UpdateBlockers(sf::Time time);
 	void UpdateElevators(sf::Time time);
 	void UpdateEnding(sf::Time time);
 	void UpdateBomb(sf::Time time);
+	void UpdatePanneaux(sf::Time time);
+	//void UpdateDoors(sf::Time time);
 
 	void AddTile(string name, int posX, int posY, int type);
 
@@ -82,6 +88,8 @@ public:
 
 	void ResetLevel();
 
+	Door* GetDoor(int theX, int theY);
+
 private:
 	//Variables de la classe en accès privé
 
@@ -114,6 +122,10 @@ private:
 
 	vector <Blocker*> blockers;
 
+	vector <Panneau*> panneaux;
+
+	vector <Door*> doors;
+
 	EndingPlateform* theEndingPlateform;
 
 	Elevator* theElevator;
@@ -135,6 +147,5 @@ private:
 
 	bool started;
 
-	int mapNumber;
 };
 #endif

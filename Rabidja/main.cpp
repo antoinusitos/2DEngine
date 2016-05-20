@@ -1,6 +1,6 @@
 #include "main.h"
 
-void InitLevel1()
+void InitLevel1(int mapNumber)
 {
 	theMap = new Map();
 	player = new Player(theMap);
@@ -8,7 +8,7 @@ void InitLevel1()
 	player->SetX(100);
 	player->SetY(100);
 
-	int mapToLoad = 3;
+	int mapToLoad = mapNumber;
 
 	theMap->SetMapNumber(mapToLoad);
 	theMap->LoadLevel(mapToLoad);
@@ -380,6 +380,11 @@ int main(int argc, char *argv[])
 				theMap->UpdateElevators(time);
 				theMap->DrawElevators(window);
 
+				theMap->UpdatePanneaux(time);
+				theMap->DrawPanneaux(window);
+
+				theMap->DrawDoors(window);
+
 				player->Draw(window);
 
 				Debug::Instance()->PrintDebug(window);
@@ -392,6 +397,11 @@ int main(int argc, char *argv[])
 					theMap->StopMusic();
 					soundMenu.play();
 					sleep(Time(seconds(1)));
+				}
+
+				if (player->MustLoadLevel() != -1)
+				{
+					InitLevel1(player->MustLoadLevel());
 				}
 			}
 		}

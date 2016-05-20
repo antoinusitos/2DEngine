@@ -33,6 +33,8 @@ public:
 
 	bool GetWantsTheMenu();
 	void ResetEntity() override;
+	void ActivateLevel();
+	int MustLoadLevel();
 
 private:
 	float dirX;
@@ -105,6 +107,8 @@ private:
 	sf::Sound soundEnter;
 
 	int animSlower;
+
+	int mapNumber;
 };
 
 #endif
