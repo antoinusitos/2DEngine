@@ -19,6 +19,7 @@ public:
 	Player* GetPlayer();
 
 	void Invert();
+	void ResetEntity() override;
 
 private:
 

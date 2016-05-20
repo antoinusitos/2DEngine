@@ -46,3 +46,9 @@ void Blocker::Rotate(bool right)
 		sprite.setRotation(0);
 	}
 }
+
+void Blocker::ResetEntity()
+{
+	ResetPos();
+	sprite.setRotation(0);
+}

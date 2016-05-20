@@ -64,6 +64,26 @@ Map::Map()
 		soundMusic.setBuffer(bufferMusic);
 	}
 
+	if (!bufferMusic2.loadFromFile("sound/map2.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound jump of the player." << endl;
+	}
+	else
+	{
+		soundMusic2.setBuffer(bufferMusic2);
+	}
+
+	if (!bufferMusic3.loadFromFile("sound/map3.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound jump of the player." << endl;
+	}
+	else
+	{
+		soundMusic3.setBuffer(bufferMusic3);
+	}
+
 	//GenerateTerrain();
 	playerStartX = 0;
 	playerStartY = 0;
@@ -127,7 +147,8 @@ void Map::DrawBlockers(sf::RenderWindow & window)
 
 void Map::DrawElevators(sf::RenderWindow & window)
 {
-	theElevator->Draw(window);
+	if(theElevator != nullptr)
+		theElevator->Draw(window);
 }
 
 void Map::DrawEnding(sf::RenderWindow & window)
@@ -158,7 +179,8 @@ void Map::UpdateBlockers(sf::Time time)
 
 void Map::UpdateElevators(sf::Time time)
 {
-	theElevator->Update(nullptr, time);
+	if(theElevator != nullptr)
+		theElevator->Update(nullptr, time);
 }
 
 void Map::UpdateEnding(sf::Time time)
@@ -210,7 +232,7 @@ void Map::GenerateTerrainWithFile(int nb)
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			if (nb == 3)
+			if (nb == 2)
 			{
 				bool canDraw = true;
 				if (lignes[i][j] == 19)
@@ -255,13 +277,13 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 40.0f);
+					theBomb = new Bomb("level1TileSheet2", j, i, 30.0f);
 					canDraw = false;
 				}
 				if (canDraw)
 					AddTile("level1TileSheet2", j, i, lignes[i][j]);
 			}
-			else if (nb == 4)
+			else if (nb == 3)
 			{
 				SetCanFinish(true);
 				bool canDraw = true;
@@ -277,7 +299,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 12)
 				{
-					powers.push_back(new Power(Power::type::red, 20.0f, j, i, this, 0));
+					powers.push_back(new Power(Power::type::red, 10.0f, j, i, this, 0));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 13)
@@ -312,7 +334,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 70.0f);
+					theBomb = new Bomb("level1TileSheet2", j, i, 60.0f);
 					canDraw = false;
 				}
 				if (canDraw)
@@ -486,12 +508,34 @@ bool Map::GetCanFinish()
 
 void Map::PlayMusic()
 {
-	soundMusic.play();
+	if (mapNumber == 1)
+	{
+		soundMusic.play();
+	}
+	else if (mapNumber == 2)
+	{
+		soundMusic2.play();
+	}
+	else if (mapNumber == 3)
+	{
+		soundMusic3.play();
+	}
 }
 
 void Map::StopMusic()
 {
-	soundMusic.stop();
+	if (mapNumber == 1)
+	{
+		soundMusic.stop();
+	}
+	else if (mapNumber == 2)
+	{
+		soundMusic2.stop();
+	}
+	else if (mapNumber == 3)
+	{
+		soundMusic3.stop();
+	}
 }
 
 bool Map::GetGameOver()
@@ -515,5 +559,40 @@ void Map::Start(Time time)
 	{
 		started = true;
 		theBomb->Activate(time);
+	}
+}
+
+void Map::SetMapNumber(int nb)
+{
+	mapNumber = nb;
+}
+
+void Map::ResetLevel()
+{
+	theElevator->ResetEntity();
+	theBomb->ResetEntity();
+	theEndingPlateform->ResetEntity();
+	for (vector<Tile*>::iterator it = layer1.begin(); it != layer1.end(); ++it) {
+		(*it)->ResetEntity();
+	}
+	for (vector<Blocker*>::iterator it3 = blockers.begin(); it3 != blockers.end(); ++it3) {
+		(*it3)->ResetEntity();
+	}
+	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
+		(*it2)->ResetEntity();
+	}
+
+	delete theElevator;
+	delete theBomb;
+	delete theEndingPlateform;
+
+	for (vector<Tile*>::iterator it = layer1.begin(); it != layer1.end(); ++it) {
+		delete *it;
+	}
+	for (vector<Blocker*>::iterator it3 = blockers.begin(); it3 != blockers.end(); ++it3) {
+		delete *it3;
+	}
+	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
+		delete *it2;
 	}
 }

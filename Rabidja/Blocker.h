@@ -13,6 +13,7 @@ public:
 	void Update(Input* input, Time time) override;
 
 	void Rotate(bool right);
+	void ResetEntity() override;
 
 private:
 	int xSprite;

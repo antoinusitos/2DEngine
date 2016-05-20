@@ -31,9 +31,16 @@ public:
 	virtual void Draw(sf::RenderWindow &window) = 0;
 	virtual void Update(Input* input = nullptr, Time time = Time::Zero) = 0;
 
+	void ResetPos();
+
+	virtual void ResetEntity() = 0;
+
 protected:
 	int x;
 	int y;
+
+	int xReset;
+	int yReset;
 
 	int width;
 	int height;

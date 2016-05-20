@@ -60,3 +60,6 @@ sf::Texture textureBoutonSaut;
 sf::Sprite spriteBoutonSaut;
 float offsetBJ; 
 bool monteBJ;
+
+sf::Texture textureSplash;
+sf::Sprite spriteSplash;

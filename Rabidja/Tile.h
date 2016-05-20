@@ -16,6 +16,7 @@ public:
 	int GetTileType();
 	void Hide();
 	void Show();
+	void ResetEntity() override;
 
 private:
 	int collisionType;

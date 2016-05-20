@@ -24,6 +24,12 @@ Elevator::Elevator(string tileName, int theX, int theY, Map* aMap)
 	thePlayer = nullptr;
 }
 
+void Elevator::ResetEntity()
+{
+	ResetPos();
+	up = true;
+	thePlayer = nullptr;
+}
 
 Elevator::~Elevator()
 {

@@ -48,6 +48,16 @@ Bomb::Bomb(string tileName, int theX, int theY, float theTimeToExplode)
 	currentTimeToBip = 0.0f;
 }
 
+void Bomb::ResetEntity()
+{
+	ResetPos();
+	activated = false;
+	exploded = false;
+	timeToBip = 1.0f;
+	currentTimeToBip = 0.0f;
+	currentTime = 0;
+}
+
 Bomb::~Bomb()
 {
 }

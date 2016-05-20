@@ -8,7 +8,10 @@ void InitLevel1()
 	player->SetX(100);
 	player->SetY(100);
 
-	theMap->LoadLevel(4);
+	int mapToLoad = 3;
+
+	theMap->SetMapNumber(mapToLoad);
+	theMap->LoadLevel(mapToLoad);
 	player->SetStartPos(theMap->GetStartX(), theMap->GetStartY());
 	theMap->PlayMusic();
 }
@@ -40,6 +43,14 @@ int main(int argc, char *argv[])
 	}
 	else
 		sprite.setTexture(texture);
+
+	if (!textureSplash.loadFromFile("graphics/splash.png"))
+	{
+		// Error
+		cout << "Error while loading the texture splash of the main." << endl;
+	}
+	else
+		spriteSplash.setTexture(textureSplash);
 
 	if (!textureBoutonGauche.loadFromFile("graphics/buttonleft.png"))
 	{
@@ -154,12 +165,15 @@ int main(int argc, char *argv[])
 			if (begin)
 			{
 
-				RectangleShape rectangle(sf::Vector2f(120, 50));
+				/*RectangleShape rectangle(sf::Vector2f(120, 50));
 
 				rectangle.setSize(sf::Vector2f(100, 100));
-				rectangle.setFillColor(sf::Color(100, 250, 50));
+				rectangle.setFillColor(sf::Color(100, 250, 50));*/
 
-				window.draw(rectangle);
+				spriteSplash.setPosition(Vector2f((float)0, (float)0));
+				spriteSplash.setTextureRect(sf::IntRect(0, 0, Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT));
+
+				window.draw(spriteSplash);
 
 				currentTimeSplah += theClock.restart().asMilliseconds();
 				if (currentTimeSplah/1000 >= 7.0f)
@@ -167,8 +181,8 @@ int main(int argc, char *argv[])
 
 					begin = false;
 
-					rectangle.setSize(sf::Vector2f(0, 0));
-					window.draw(rectangle);
+					/*rectangle.setSize(sf::Vector2f(0, 0));
+					window.draw(rectangle);*/
 				}
 			}
 			else
@@ -325,6 +339,8 @@ int main(int argc, char *argv[])
 
 			if (input->getButton().restart == true)
 			{
+				theMap->StopMusic();
+				theMap->ResetLevel();
 				InitLevel1();
 			}
 			else if (theMap->GetGameOver())

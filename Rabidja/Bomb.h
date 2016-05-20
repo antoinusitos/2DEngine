@@ -19,6 +19,7 @@ public:
 	void Activate(Time theTime);
 
 	bool GetExploded();
+	void ResetEntity() override;
 
 private:
 	int xSprite;

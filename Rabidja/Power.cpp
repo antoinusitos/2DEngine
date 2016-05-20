@@ -80,6 +80,16 @@ Power::Power(type aType, float aTimeToRespawn, int aPosX, int aPosY, Map* theMap
 	typeExecution = theTypeExecution;
 }
 
+void Power::ResetEntity()
+{
+	ResetPos();
+	currentTime = 0.0f;
+	isAttached = true;
+	canbePicked = true;
+	pickUpTime = 0.0f;
+	Desactivate();
+}
+
 Power::~Power()
 {
 }

@@ -32,6 +32,7 @@ public:
 	void TakePower();
 
 	bool GetWantsTheMenu();
+	void ResetEntity() override;
 
 private:
 	float dirX;

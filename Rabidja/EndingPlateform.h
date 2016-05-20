@@ -17,6 +17,7 @@ public:
 
 	void SetMove(bool state);
 	void SetRetour(bool state);
+	void ResetEntity() override;
 
 private:
 	int xSprite;

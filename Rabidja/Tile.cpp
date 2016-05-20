@@ -50,6 +50,12 @@ Tile::Tile(string tileName, int theX, int theY, int theTileType)
 	mustBeRendered = true;
 }
 
+void Tile::ResetEntity()
+{
+	ResetPos();
+	mustBeRendered = true;
+}
+
 
 Tile::~Tile()
 {

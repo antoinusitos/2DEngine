@@ -78,6 +78,10 @@ public:
 
 	void Start(sf::Time time);
 
+	void SetMapNumber(int nb);
+
+	void ResetLevel();
+
 private:
 	//Variables de la classe en accès privé
 
@@ -121,8 +125,16 @@ private:
 	sf::SoundBuffer bufferMusic;
 	sf::Sound soundMusic;
 
+	sf::SoundBuffer bufferMusic2;
+	sf::Sound soundMusic2;
+
+	sf::SoundBuffer bufferMusic3;
+	sf::Sound soundMusic3;
+
 	bool gameOver;
 
 	bool started;
+
+	int mapNumber;
 };
 #endif

@@ -38,6 +38,7 @@ public:
 	void Desactivate();
 
 	void PlayPut();
+	void ResetEntity() override;
 
 private:
 

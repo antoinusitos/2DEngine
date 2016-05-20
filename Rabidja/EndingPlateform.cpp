@@ -27,6 +27,14 @@ EndingPlateform::EndingPlateform(string tileName, int theX, int theY, Bomb* aBom
 	theMap = aMap;
 }
 
+void EndingPlateform::ResetEntity()
+{
+	ResetPos();
+	move = false;
+	retour = false;
+	yPos = y;
+}
+
 EndingPlateform::~EndingPlateform()
 {
 }

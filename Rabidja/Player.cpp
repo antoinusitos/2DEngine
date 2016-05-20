@@ -162,6 +162,12 @@ void Player::Initialize()
 
 }
 
+void Player::ResetEntity()
+{
+	ResetPos();
+	Initialize();
+}
+
 void Player::SetLife(int theLife)
 {
 	life = theLife;
@@ -208,22 +214,22 @@ void Player::Draw(RenderWindow &window)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect(((frameNumber/ animSlower) + 1) * width, height * 2, -width, height));
+			sprite.setTextureRect(sf::IntRect(((frameNumber/ animSlower) + 1) * width, height * 3, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height * 2 , width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height * 3 , width, height));
 		}
 	}
 	else if (state == Data::Instance()->IDLE)
 	{
 		if (direction == Data::Instance()->LEFT)
 		{
-			sprite.setTextureRect(sf::IntRect(((frameNumber / animSlower) * width) + width, height, -width, height));
+			sprite.setTextureRect(sf::IntRect(((frameNumber / animSlower) * width) + width, height * 2, -width, height));
 		}
 		else
 		{
-			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height, width, height));
+			sprite.setTextureRect(sf::IntRect((frameNumber / animSlower) * width, height * 2, width, height));
 		}
 	}
 	else if (state == Data::Instance()->JUMP1)
@@ -239,11 +245,11 @@ void Player::Draw(RenderWindow &window)
 	}
 	else if (state == Data::Instance()->LADDER)
 	{
-		sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, 0, width, height));
+		sprite.setTextureRect(sf::IntRect((frameNumber + 1) * width, height, width, height));
 	}
 	else if (state == Data::Instance()->DEAD)
 	{
-		sprite.setTextureRect(sf::IntRect(0, height * 3, width, height));
+		sprite.setTextureRect(sf::IntRect(0, height * 4, width, height));
 	}
 	window.draw(sprite);
 	
@@ -584,14 +590,17 @@ void Player::mapCollision(Map* map)
 			{
 				bool hitEntity = false;
 
-				if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				if (map->GetElevator() != nullptr)
 				{
-					hitEntity = true;
-					map->GetElevator()->SetPlayer(this);
-				}
-				else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
-				{
-					map->GetElevator()->SetPlayer(nullptr);
+					if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+					{
+						hitEntity = true;
+						map->GetElevator()->SetPlayer(this);
+					}
+					else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+					{
+						map->GetElevator()->SetPlayer(nullptr);
+					}
 				}
 
 				//On vérifie si les tiles recouvertes sont solides
@@ -637,14 +646,18 @@ void Player::mapCollision(Map* map)
 			else if (dirX < 0)
 			{
 				bool hitEntity = false;
-				if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+				if (map->GetElevator() != nullptr)
 				{
-					hitEntity = true;
-					map->GetElevator()->SetPlayer(this);
-				}
-				else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
-				{
-					map->GetElevator()->SetPlayer(nullptr);
+
+					if (x2 * 32 > map->GetElevator()->GetX() && x2 * 32 < (map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && y2 * 32 > map->GetElevator()->GetY() && y2 * 32 < map->GetElevator()->GetY() + map->GetElevator()->GetHeight())
+					{
+						hitEntity = true;
+						map->GetElevator()->SetPlayer(this);
+					}
+					else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+					{
+						map->GetElevator()->SetPlayer(nullptr);
+					}
 				}
 
 				if (map->GetTile(y1, x1) != nullptr && map->GetTile(y1, x1)->GetType() > BLANK_TILE || map->GetTile(y2, x1) != nullptr && map->GetTile(y2, x1)->GetType() > BLANK_TILE)
@@ -782,7 +795,7 @@ void Player::mapCollision(Map* map)
 				hasJump = false;
 				canJump = true;
 			}
-			else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+			else if (map->GetElevator() != nullptr && (x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
 			{
 				map->GetElevator()->SetPlayer(nullptr);
 			}
@@ -801,7 +814,7 @@ void Player::mapCollision(Map* map)
 				y = (y1 + 1) * TileSize;
 				dirY = 0;
 			}
-			else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+			else if (map->GetElevator() != nullptr && (x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
 			{
 				map->GetElevator()->SetPlayer(nullptr);
 			}
@@ -810,7 +823,7 @@ void Player::mapCollision(Map* map)
 				y = map->GetElevator()->GetY() - map->GetElevator()->GetHeight() - 5;
 			}*/
 		}
-		else if ((x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
+		else if (map->GetElevator() != nullptr && (x2 * 32 < map->GetElevator()->GetX() || x2 * 32 > map->GetElevator()->GetX() + map->GetElevator()->GetWidth()) && map->GetElevator()->GetPlayer() != nullptr)
 		{
 			map->GetElevator()->SetPlayer(nullptr);
 		}

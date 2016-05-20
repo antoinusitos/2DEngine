@@ -47,3 +47,9 @@ int Entity::GetWidth()
 {
 	return width;
 }
+
+void Entity::ResetPos()
+{
+	x = xReset;
+	y = yReset;
+}
