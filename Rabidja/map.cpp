@@ -111,10 +111,18 @@ Map::Map()
 
 Map::~Map()
 {
+	delete theElevator;
+	delete theBomb;
+	delete theEndingPlateform;
 
-	for (unsigned i = 0; i < powers.size(); i++)
-	{
-		delete powers.at(i);
+	for (vector<Tile*>::iterator it = layer1.begin(); it != layer1.end(); ++it) {
+		delete *it;
+	}
+	for (vector<Blocker*>::iterator it3 = blockers.begin(); it3 != blockers.end(); ++it3) {
+		delete *it3;
+	}
+	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
+		delete *it2;
 	}
 }
 
@@ -384,7 +392,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 30.0f);
+					theBomb = new Bomb("level1TileSheet2", j, i, 40.0f);
 					canDraw = false;
 				}
 				if (canDraw)
@@ -677,9 +685,12 @@ void Map::SetMapNumber(int nb)
 
 void Map::ResetLevel()
 {
-	theElevator->ResetEntity();
-	theBomb->ResetEntity();
-	theEndingPlateform->ResetEntity();
+	if(theElevator != nullptr)
+		theElevator->ResetEntity();
+	if (theBomb != nullptr)
+		theBomb->ResetEntity();
+	if (theEndingPlateform != nullptr)
+		theEndingPlateform->ResetEntity();
 	for (vector<Tile*>::iterator it = layer1.begin(); it != layer1.end(); ++it) {
 		(*it)->ResetEntity();
 	}
@@ -689,20 +700,6 @@ void Map::ResetLevel()
 	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
 		(*it2)->ResetEntity();
 	}
-
-	delete theElevator;
-	delete theBomb;
-	delete theEndingPlateform;
-
-	for (vector<Tile*>::iterator it = layer1.begin(); it != layer1.end(); ++it) {
-		delete *it;
-	}
-	for (vector<Blocker*>::iterator it3 = blockers.begin(); it3 != blockers.end(); ++it3) {
-		delete *it3;
-	}
-	for (vector<Power*>::iterator it2 = powers.begin(); it2 != powers.end(); ++it2) {
-		delete *it2;
-	}
 }
 
 int Map::GetDoor(int theX, int theY)
@@ -711,9 +708,9 @@ int Map::GetDoor(int theX, int theY)
 
 	for (unsigned i = 0; i < doors.size(); i++)
 	{
-		if (doors.at(i)->GetX() == (theX * Data::Instance()->TILE_SIZE) && doors.at(i)->GetY() == (theY * Data::Instance()->TILE_SIZE))
+		if (doors.at(i)->GetX() >= ((theX - 1) * Data::Instance()->TILE_SIZE) && doors.at(i)->GetX() <= ((theX + 1) * Data::Instance()->TILE_SIZE) && doors.at(i)->GetY() <= (theY * Data::Instance()->TILE_SIZE) && doors.at(i)->GetY() + 3 * 32 >= (theY * Data::Instance()->TILE_SIZE))
 		{
-			retour = i;
+			retour = i + 2;
 		}
 	}
 

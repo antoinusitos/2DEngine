@@ -63,3 +63,5 @@ bool monteBJ;
 
 sf::Texture textureSplash;
 sf::Sprite spriteSplash;
+
+int currentMap = -1;

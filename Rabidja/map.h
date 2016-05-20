@@ -88,7 +88,7 @@ public:
 
 	void ResetLevel();
 
-	Door* GetDoor(int theX, int theY);
+	int GetDoor(int theX, int theY);
 
 private:
 	//Variables de la classe en accès privé
@@ -147,5 +147,6 @@ private:
 
 	bool started;
 
+	int mapNumber;
 };
 #endif

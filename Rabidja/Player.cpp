@@ -501,17 +501,19 @@ void Player::Update(Input * input, sf::Time time)
 				wantsTheMenu = true;
 			}
 		}
-		else if (input->getButton().up == true)
+		else if (input->getButton().up == true && indexMenu > 0)
 		{
 			soundSeletion.play();
 			indexMenu--;
 			indexMenu = max(indexMenu, 0);
+			input->setButton(Input::up, false);
 		}
-		else if (input->getButton().down == true)
+		else if (input->getButton().down == true && indexMenu < 1)
 		{
 			soundSeletion.play();
 			indexMenu++;
 			indexMenu = min(indexMenu, 1);
+			input->setButton(Input::down, false);
 		}
 	}
 	else

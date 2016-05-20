@@ -2,6 +2,13 @@
 
 void InitLevel1(int mapNumber)
 {
+	if (theMap != nullptr)
+	{
+		theMap->StopMusic();
+		theMap->ResetLevel();
+		delete theMap;
+	}
+
 	theMap = new Map();
 	player = new Player(theMap);
 	player->Initialize();
@@ -9,7 +16,7 @@ void InitLevel1(int mapNumber)
 	player->SetY(100);
 
 	int mapToLoad = mapNumber;
-
+	currentMap = mapNumber;
 	theMap->SetMapNumber(mapToLoad);
 	theMap->LoadLevel(mapToLoad);
 	player->SetStartPos(theMap->GetStartX(), theMap->GetStartY());
@@ -308,7 +315,7 @@ int main(int argc, char *argv[])
 				{
 					soundEnter.play();
 					inMenu = false;
-					InitLevel1();
+					InitLevel1(1);
 					soundMenu.stop();
 				}
 				else
@@ -341,13 +348,15 @@ int main(int argc, char *argv[])
 			{
 				theMap->StopMusic();
 				theMap->ResetLevel();
-				InitLevel1();
+				InitLevel1(currentMap);
 			}
 			else if (theMap->GetGameOver())
 			{
 				theMap->StopMusic();
-				soundMenu.play();
-				inMenu = true;
+				theMap->ResetLevel();
+				//soundMenu.play();
+				//inMenu = true;
+				InitLevel1(currentMap);
 			}
 			else
 			{
