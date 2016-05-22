@@ -13,6 +13,25 @@ EndingPlateform::EndingPlateform(string tileName, int theX, int theY, Bomb* aBom
 		xSprite = 3;
 		sprite.setTexture(texture);
 	}
+
+	if (!bufferWin.loadFromFile("sound/StageClear.wav"))
+	{
+		// Error
+		cout << "Error while loading the sound explosion of the bomb." << endl;
+	}
+	else
+	{
+		soundWin.setBuffer(bufferWin);
+	}
+
+	if (!textureWin.loadFromFile("graphics/Win.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonstart of the main." << endl;
+	}
+	else
+		spriteWin.setTexture(textureWin);
+
 	width = 32;
 	height = 32;
 	x = theX * width;
@@ -25,6 +44,7 @@ EndingPlateform::EndingPlateform(string tileName, int theX, int theY, Bomb* aBom
 	limitY = 32 * 5;
 	theBomb = aBomb;
 	theMap = aMap;
+	finished = false;
 }
 
 void EndingPlateform::ResetEntity()
@@ -43,6 +63,13 @@ void EndingPlateform::Draw(sf::RenderWindow & window)
 {
 	sprite.setPosition(Vector2f((float)x, (float)y));
 	window.draw(sprite);
+	if (finished)
+	{
+		int midWidth = Data::Instance()->SCREEN_WIDTH / 3;
+		int midHeight = Data::Instance()->SCREEN_HEIGHT / 3;
+		spriteWin.setPosition(midWidth / 4, midHeight / 2);
+		window.draw(spriteWin);
+	}
 }
 
 void EndingPlateform::Update(Input * input, Time time)
@@ -63,13 +90,15 @@ void EndingPlateform::Update(Input * input, Time time)
 				theBomb->PlayExplosion();
 				cout << endl; // game over
 				sleep(Time(milliseconds(1500)));
-				theMap->SetGameOver(true);
+				theMap->SetGameOver(true, false);
 			}
 			else
 			{
+				finished = true;
+				soundWin.play();
 				cout << endl; // win 
-				sleep(Time(milliseconds(1500)));
-				theMap->SetGameOver(true);
+				sleep(Time(milliseconds(3000)));
+				theMap->SetGameOver(true, true);
 			}
 		}
 	}
@@ -86,7 +115,7 @@ void EndingPlateform::Update(Input * input, Time time)
 	if (theBomb->GetExploded())
 	{
 		sleep(Time(milliseconds(1500)));
-		theMap->SetGameOver(true);
+		theMap->SetGameOver(true, false);
 	}
 }
 

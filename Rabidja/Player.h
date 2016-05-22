@@ -109,6 +109,9 @@ private:
 	int animSlower;
 
 	int mapNumber;
+
+	sf::Texture texturePause;
+	sf::Sprite spritePause;
 };
 
 #endif

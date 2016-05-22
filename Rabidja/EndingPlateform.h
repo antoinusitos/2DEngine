@@ -33,6 +33,14 @@ private:
 	Bomb* theBomb;
 
 	Map* theMap;
+
+	sf::SoundBuffer bufferWin;
+	sf::Sound soundWin;
+
+	sf::Texture textureWin;
+	sf::Sprite spriteWin;
+
+	bool finished;
 };
 
 #endif

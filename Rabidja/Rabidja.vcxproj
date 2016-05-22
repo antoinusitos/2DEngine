@@ -103,6 +103,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Power.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Tuto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocker.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Power.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Tuto.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -61,6 +61,31 @@ sf::Sprite spriteBoutonSaut;
 float offsetBJ; 
 bool monteBJ;
 
+sf::Texture textureS;
+sf::Sprite spriteS;
+float offsetS;
+bool monteS;
+
+sf::Texture textureT;
+sf::Sprite spriteT;
+float offsetT;
+bool monteT;
+
+sf::Texture textureA;
+sf::Sprite spriteA;
+float offsetA;
+bool monteA;
+
+sf::Texture textureR;
+sf::Sprite spriteR;
+float offsetR;
+bool monteR;
+
+sf::Texture textureT2;
+sf::Sprite spriteT2;
+float offsetT2;
+bool monteT2;
+
 sf::Texture textureSplash;
 sf::Sprite spriteSplash;
 

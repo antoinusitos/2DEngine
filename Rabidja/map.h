@@ -19,6 +19,7 @@ class Bomb;
 class Elevator;
 class Panneau;
 class Door;
+class Tuto;
 
 class Map
 {
@@ -39,6 +40,7 @@ public:
 	void DrawBomb(sf::RenderWindow &window);
 	void DrawPanneaux(sf::RenderWindow &window);
 	void DrawDoors(sf::RenderWindow &window);
+	void DrawTuto(sf::RenderWindow &window);
 	void UpdatePowers(sf::Time time);
 	void UpdateBlockers(sf::Time time);
 	void UpdateElevators(sf::Time time);
@@ -78,9 +80,11 @@ public:
 	void StopMusic();
 
 	bool GetGameOver();
-	void SetGameOver(bool state);
+	void SetGameOver(bool state, bool winState);
 
 	Bomb* GetBomb();
+
+	bool GetWin();
 
 	void Start(sf::Time time);
 
@@ -148,5 +152,9 @@ private:
 	bool started;
 
 	int mapNumber;
+
+	Tuto* theTuto;
+
+	bool win;
 };
 #endif

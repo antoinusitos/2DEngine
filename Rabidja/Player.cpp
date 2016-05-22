@@ -15,6 +15,14 @@ Player::Player(Map* map)
 	else
 		sprite.setTexture(texture);
 
+	if (!texturePause.loadFromFile("graphics/Pause.png"))
+	{
+		// Error
+		cout << "Error while loading the texture of the player." << endl;
+	}
+	else
+		spritePause.setTexture(texturePause);
+
 	
 	if (!bufferJump.loadFromFile("sound/jump.wav"))
 	{
@@ -88,7 +96,7 @@ Player::Player(Map* map)
 	}
 
 	fontSize = 30;
-	fontColor = Color::Cyan;
+	fontColor = Color::Color(115, 157, 99);
 	returnText.setCharacterSize(fontSize);
 	quitText.setCharacterSize(fontSize);
 	returnText.setStyle(sf::Text::Bold);
@@ -100,7 +108,7 @@ Player::Player(Map* map)
 	returnText.setPosition(Vector2f(midWidth, midHeight));
 	quitText.setPosition(Vector2f(midWidth, midHeight + 100));
 
-	if (!font.loadFromFile("font/arial.ttf"))
+	if (!font.loadFromFile("font/quartz.ttf"))
 	{
 		// Error
 		cout << "Error while loading the font of the player." << endl;
@@ -199,7 +207,8 @@ void Player::Draw(RenderWindow &window)
 		frameTimer = Data::Instance()->TIME_BETWEEN_2_FRAMES_PLAYER;
 
 		//Et on incrémente notre variable qui compte les frames de 1 pour passer à la suivante
-		frameNumber++;
+		if (state != Data::Instance()->JUMP1 && state != Data::Instance()->LADDER)
+			frameNumber++;
 
 		//Mais si on dépasse la frame max, il faut revenir à la première :
 		if ((frameNumber / animSlower) >= frameMax)
@@ -276,9 +285,9 @@ void Player::Draw(RenderWindow &window)
 		int midHeight = Data::Instance()->SCREEN_HEIGHT / 3;
 
 		int size = 300;
-		sf::RectangleShape rectangle(sf::Vector2f(size, size));
-		rectangle.setPosition(midWidth - (size / 4), midHeight - (size / 4));
-		rectangle.setFillColor(sf::Color(50, 50, 50));
+		//sf::RectangleShape rectangle(sf::Vector2f(size, size));
+		spritePause.setPosition(midWidth - (size / 4), midHeight - (size / 2));
+		//rectangle.setFillColor(sf::Color(50, 50, 50));
 
 		if (indexMenu == 0)
 		{
@@ -291,7 +300,7 @@ void Player::Draw(RenderWindow &window)
 			returnText.setColor(selectedFontColor);
 		}
 
-		window.draw(rectangle);
+		window.draw(spritePause);
 		window.draw(quitText);
 		window.draw(returnText);
 	}
@@ -435,8 +444,8 @@ void Player::Update(Input * input, sf::Time time)
 				if (state != Data::Instance()->LADDER)
 				{
 					state = Data::Instance()->LADDER;
-					frameNumber = 0;
-					frameMax = 3;
+					//frameNumber = 0;
+					frameMax = 2;
 				}
 				dirY = -Data::Instance()->CLIMB_HEIGHT;
 			}
@@ -448,8 +457,8 @@ void Player::Update(Input * input, sf::Time time)
 				if (state != Data::Instance()->LADDER)
 				{
 					state = Data::Instance()->LADDER;
-					frameNumber = 0;
-					frameMax = 3;
+					//frameNumber = 0;
+					frameMax = 2;
 				}
 				dirY = Data::Instance()->CLIMB_HEIGHT;
 			}
@@ -521,7 +530,7 @@ void Player::Update(Input * input, sf::Time time)
 		sleep(Time(milliseconds(500)));
 		soundDead.play();
 		sleep(Time(milliseconds(1000)));
-		theMap->SetGameOver(true);
+		theMap->SetGameOver(true, false);
 	}
 }
 

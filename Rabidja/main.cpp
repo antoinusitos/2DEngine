@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 		lvl1.setFont(font);
 	}
 
-	if (!texture.loadFromFile("graphics/menu2.png"))
+	if (!texture.loadFromFile("graphics/menufinal.png"))
 	{
 		// Error
 		cout << "Error while loading the texture of the main." << endl;
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	else
 		spriteSplash.setTexture(textureSplash);
 
-	if (!textureBoutonGauche.loadFromFile("graphics/buttonleft.png"))
+	if (!textureBoutonGauche.loadFromFile("graphics/buttonP.png"))
 	{
 		// Error
 		cout << "Error while loading the texture buttonleft of the main." << endl;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 	else
 		spriteBoutonGauche.setTexture(textureBoutonGauche);
 
-	if (!textureBoutonDroite.loadFromFile("graphics/buttonright.png"))
+	if (!textureBoutonDroite.loadFromFile("graphics/buttonR.png"))
 	{
 		// Error
 		cout << "Error while loading the texture buttonright of the main." << endl;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	else
 		spriteBoutonDroite.setTexture(textureBoutonDroite);
 
-	if (!textureBoutonAction.loadFromFile("graphics/buttonaction.png"))
+	if (!textureBoutonAction.loadFromFile("graphics/buttonS.png"))
 	{
 		// Error
 		cout << "Error while loading the texture buttonaction of the main." << endl;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 	else
 		spriteBoutonAction.setTexture(textureBoutonAction);
 
-	if (!textureBoutonStart.loadFromFile("graphics/buttonstart.png"))
+	if (!textureBoutonStart.loadFromFile("graphics/buttonS.png"))
 	{
 		// Error
 		cout << "Error while loading the texture buttonstart of the main." << endl;
@@ -91,13 +91,53 @@ int main(int argc, char *argv[])
 	else
 		spriteBoutonStart.setTexture(textureBoutonStart);
 
-	if (!textureBoutonSaut.loadFromFile("graphics/buttonjump.png"))
+	if (!textureBoutonSaut.loadFromFile("graphics/buttonE.png"))
 	{
 		// Error
 		cout << "Error while loading the texture buttonjump of the main." << endl;
 	}
 	else
 		spriteBoutonSaut.setTexture(textureBoutonSaut);
+
+	if (!textureS.loadFromFile("graphics/buttonS.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonstart of the main." << endl;
+	}
+	else
+		spriteS.setTexture(textureS);
+
+	if (!textureT.loadFromFile("graphics/buttonT.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonjump of the main." << endl;
+	}
+	else
+		spriteT.setTexture(textureT);
+
+	if (!textureA.loadFromFile("graphics/buttonA.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonstart of the main." << endl;
+	}
+	else
+		spriteA.setTexture(textureA);
+
+	if (!textureR.loadFromFile("graphics/buttonR.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonstart of the main." << endl;
+	}
+	else
+		spriteR.setTexture(textureR);
+
+	if (!textureT2.loadFromFile("graphics/buttonT.png"))
+	{
+		// Error
+		cout << "Error while loading the texture buttonjump of the main." << endl;
+	}
+	else
+		spriteT2.setTexture(textureT2);
 
 	if (!bufferSeletion.loadFromFile("sound/selection.wav"))
 	{
@@ -144,17 +184,25 @@ int main(int argc, char *argv[])
 	float smoothDeplacement = 0.5f;
 
 	int midWidth = Data::Instance()->SCREEN_WIDTH / 6;
-	int midHeight = Data::Instance()->SCREEN_WIDTH / 4;
+	int midHeight = Data::Instance()->SCREEN_WIDTH / 1.3f;
 
-	spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight/2) + offsetBG));
+	spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight / 2) + offsetBG));
 	spriteBoutonDroite.setPosition(Vector2f((midWidth / 2) + 50, (midHeight / 2) + offsetBD));
 	spriteBoutonSaut.setPosition(Vector2f((midWidth / 2) + 100, (midHeight / 2) + offsetBJ));
 	spriteBoutonAction.setPosition(Vector2f((midWidth / 2) + 150, (midHeight / 2) + offsetBA));
 	spriteBoutonStart.setPosition(Vector2f((midWidth / 2) + 200, (midHeight / 2) + offsetBS));
 
+	spriteS.setPosition(Vector2f(midWidth * 2, (midHeight / 2) + offsetBG));
+	spriteT.setPosition(Vector2f((midWidth * 2) + 50, (midHeight / 2) + offsetBD));
+	spriteA.setPosition(Vector2f((midWidth * 2) + 100, (midHeight / 2) + offsetBJ));
+	spriteR.setPosition(Vector2f((midWidth * 2) + 150, (midHeight / 2) + offsetBA));
+	spriteT2.setPosition(Vector2f((midWidth * 2) + 200, (midHeight / 2) + offsetBS));
+
 	timeClignotement = 60;
 	timeRemaining = timeClignotement;
 	visible = true;
+
+	inMenu = true;
 
 	bool begin = true;
 	float currentTimeSplah = 0.0f;
@@ -172,11 +220,6 @@ int main(int argc, char *argv[])
 			if (begin)
 			{
 
-				/*RectangleShape rectangle(sf::Vector2f(120, 50));
-
-				rectangle.setSize(sf::Vector2f(100, 100));
-				rectangle.setFillColor(sf::Color(100, 250, 50));*/
-
 				spriteSplash.setPosition(Vector2f((float)0, (float)0));
 				spriteSplash.setTextureRect(sf::IntRect(0, 0, Data::Instance()->SCREEN_WIDTH, Data::Instance()->SCREEN_HEIGHT));
 
@@ -187,10 +230,8 @@ int main(int argc, char *argv[])
 				{
 
 					begin = false;
-
-					/*rectangle.setSize(sf::Vector2f(0, 0));
-					window.draw(rectangle);*/
 				}
+
 			}
 			else
 			{
@@ -207,7 +248,7 @@ int main(int argc, char *argv[])
 
 				lvl1.setPosition(Vector2f(midWidth, midHeight*1.2f));
 
-				window.draw(lvl1);
+				//window.draw(lvl1);
 
 				if (monteBG)
 				{
@@ -294,17 +335,29 @@ int main(int argc, char *argv[])
 					}
 				}
 
-				spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight / 1.5f) + offsetBG));
-				spriteBoutonDroite.setPosition(Vector2f((midWidth / 2) + 50, (midHeight / 1.5f) + offsetBD));
-				spriteBoutonSaut.setPosition(Vector2f((midWidth / 2) + 100, (midHeight / 1.5f) + offsetBJ));
-				spriteBoutonAction.setPosition(Vector2f((midWidth / 2) + 150, (midHeight / 1.5f) + offsetBA));
-				spriteBoutonStart.setPosition(Vector2f((midWidth / 2) + 200, (midHeight / 1.5f) + offsetBS));
+				spriteBoutonGauche.setPosition(Vector2f(midWidth / 2, (midHeight) + offsetBG));
+				spriteBoutonDroite.setPosition(Vector2f((midWidth / 2) + 50, (midHeight) + offsetBD));
+				spriteBoutonSaut.setPosition(Vector2f((midWidth / 2) + 100, (midHeight ) + offsetBJ));
+				spriteBoutonAction.setPosition(Vector2f((midWidth / 2) + 150, (midHeight) + offsetBA));
+				spriteBoutonStart.setPosition(Vector2f((midWidth / 2) + 200, (midHeight ) + offsetBS));
+
+				spriteS.setPosition(Vector2f(midWidth * 2 + 150, (midHeight)+offsetBG));
+				spriteT.setPosition(Vector2f((midWidth * 2) + 200, (midHeight)+offsetBD));
+				spriteA.setPosition(Vector2f((midWidth * 2) + 250, (midHeight)+offsetBJ));
+				spriteR.setPosition(Vector2f((midWidth * 2) + 300, (midHeight)+offsetBA));
+				spriteT2.setPosition(Vector2f((midWidth * 2) + 350, (midHeight)+offsetBS));
 
 				window.draw(spriteBoutonGauche);
 				window.draw(spriteBoutonDroite);
 				window.draw(spriteBoutonSaut);
 				window.draw(spriteBoutonAction);
 				window.draw(spriteBoutonStart);
+
+				window.draw(spriteS);
+				window.draw(spriteT);
+				window.draw(spriteA);
+				window.draw(spriteR);
+				window.draw(spriteT2);
 			}
 
 			window.display();
@@ -326,7 +379,7 @@ int main(int argc, char *argv[])
 
 			
 
-			timeRemaining--;
+			/*timeRemaining--;
 			if (timeRemaining <= 0)
 			{
 				visible = !visible;
@@ -339,7 +392,7 @@ int main(int argc, char *argv[])
 					lvl1.setColor(selectedColor);
 				}
 				timeRemaining = timeClignotement;
-			}
+			}*/
 		}
 		else
 		{
@@ -353,10 +406,15 @@ int main(int argc, char *argv[])
 			else if (theMap->GetGameOver())
 			{
 				theMap->StopMusic();
-				theMap->ResetLevel();
-				//soundMenu.play();
-				//inMenu = true;
-				InitLevel1(currentMap);
+				if (theMap->GetWin())
+				{
+					InitLevel1(1);
+				}
+				else
+				{
+					theMap->ResetLevel();
+					InitLevel1(currentMap);
+				}
 			}
 			else
 			{
@@ -385,6 +443,8 @@ int main(int argc, char *argv[])
 
 				theMap->UpdateEnding(time);
 				theMap->DrawEnding(window);
+
+				theMap->DrawTuto(window);
 
 				theMap->UpdateElevators(time);
 				theMap->DrawElevators(window);

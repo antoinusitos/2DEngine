@@ -7,6 +7,7 @@
 #include "Bomb.h"
 #include "Panneau.h"
 #include "Door.h"
+#include "Tuto.h"
 
 #include <iostream>
 #include <fstream>
@@ -92,7 +93,7 @@ Map::Map()
 	canFinish = false;
 	gameOver = false;
 	started = false;
-
+	win = false;
 	/*struct Functor
 	{
 		// Normal class/struct members
@@ -187,6 +188,12 @@ void Map::DrawDoors(sf::RenderWindow &window)
 	{
 		doors.at(i)->Draw(window);
 	}
+}
+
+void Map::DrawTuto(sf::RenderWindow &window)
+{
+	if (theTuto != nullptr)
+		theTuto->Draw(window);
 }
 
 void Map::UpdatePowers(sf::Time time)
@@ -306,7 +313,12 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 59)
 				{
-					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					blockers.push_back(new Blocker("level1TileSheet2test", j, i));
+					canDraw = false;
+				}
+				else if (lignes[i][j] == 44)
+				{
+					theTuto = new Tuto("tuto", j, i);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 60)
@@ -316,12 +328,12 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 83)
 				{
-					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					theEndingPlateform = new EndingPlateform("level1TileSheet2test", j, i, theBomb, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 80)
 				{
-					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					theElevator = new Elevator("level1TileSheet2test", j, i, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 90)
@@ -341,7 +353,7 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 60.0f);
+					theBomb = new Bomb("level1TileSheet2test", j, i, 60.0f);
 					canDraw = false;
 				}
 				if (canDraw)
@@ -377,26 +389,26 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 59)
 				{
-					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					blockers.push_back(new Blocker("level1TileSheet2test", j, i));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 83)
 				{
-					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					theEndingPlateform = new EndingPlateform("level1TileSheet2test", j, i, theBomb, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 80)
 				{
-					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					theElevator = new Elevator("level1TileSheet2test", j, i, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 40.0f);
+					theBomb = new Bomb("level1TileSheet2test", j, i, 40.0f);
 					canDraw = false;
 				}
 				if (canDraw)
-					AddTile("level1TileSheet2", j, i, lignes[i][j]);
+					AddTile("level1TileSheet2test", j, i, lignes[i][j]);
 			}
 			else if (nb == 3)
 			{
@@ -434,22 +446,22 @@ void Map::GenerateTerrainWithFile(int nb)
 				}
 				else if (lignes[i][j] == 59)
 				{
-					blockers.push_back(new Blocker("level1TileSheet2", j, i));
+					blockers.push_back(new Blocker("level1TileSheet2test", j, i));
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 83)
 				{
-					theEndingPlateform = new EndingPlateform("level1TileSheet2", j, i, theBomb, this);
+					theEndingPlateform = new EndingPlateform("level1TileSheet2test", j, i, theBomb, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 80)
 				{
-					theElevator = new Elevator("level1TileSheet2", j, i, this);
+					theElevator = new Elevator("level1TileSheet2test", j, i, this);
 					canDraw = false;
 				}
 				else if (lignes[i][j] == 05)
 				{
-					theBomb = new Bomb("level1TileSheet2", j, i, 60.0f);
+					theBomb = new Bomb("level1TileSheet2test", j, i, 60.0f);
 					canDraw = false;
 				}
 				if (canDraw)
@@ -658,9 +670,15 @@ bool Map::GetGameOver()
 	return gameOver;
 }
 
-void Map::SetGameOver(bool state)
+void Map::SetGameOver(bool state, bool winState)
 {
 	gameOver = state;
+	win = winState;
+}
+
+bool Map::GetWin()
+{
+	return win;
 }
 
 Bomb* Map::GetBomb()
